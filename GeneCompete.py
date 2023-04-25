@@ -498,7 +498,8 @@ def create_zip(csv_files):
             zip_obj.write(file, file_name)
     return zip_file
 
-csv_files = ["/workspace/test2_st/sample_data/dat1.csv","/workspace/test2_st/sample_data/dat2.csv","/workspace/test2_st/sample_data/dat3.csv","/workspace/test2_st/sample_data/dat4.csv"]
+csv_files = ["sample_data/dat1.csv","sample_data/dat2.csv","sample_data/dat3.csv","sample_data/dat4.csv"]
+#csv_files = ["/workspace/test2_st/sample_data/dat1.csv","/workspace/test2_st/sample_data/dat2.csv","/workspace/test2_st/sample_data/dat3.csv","/workspace/test2_st/sample_data/dat4.csv"]
 #selected_files = st.multiselect("Select example input files to download", csv_files)
 zip_file = create_zip(csv_files)
 
