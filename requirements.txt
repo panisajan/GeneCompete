@@ -1,3 +1,4 @@
+python --version
 streamlit
 time
 pandas==1.4.4
