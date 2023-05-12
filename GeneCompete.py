@@ -6,6 +6,17 @@ import time
 import pandas as pd
 import numpy as np
 
+import pandas as pd
+import numpy as np
+from numpy.linalg import inv
+from scipy import sparse
+from scipy.sparse.linalg import eigs
+import sknetwork
+from sknetwork.ranking import PageRank
+from fast_pagerank import pagerank
+from fast_pagerank import pagerank_power
+from scipy.sparse.linalg import eigs
+
 @st.cache_data
 def GeneCompete_Intersect(table,name,method,reg):
     import pandas as pd
