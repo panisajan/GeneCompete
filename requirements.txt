@@ -1,1 +1,10 @@
 streamlit
+time
+pandas
+numpy
+scipy
+sknetwork
+sknetwork.ranking
+fast_pagerank
+scipy.sparse.linalg
+rankit.Table
