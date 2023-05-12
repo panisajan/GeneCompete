@@ -107,6 +107,14 @@ def GeneCompete_Intersect(table,name,method,reg):
         keenerRank = ranker.rank(data)
         keenerRank.columns = ['Name','Score(Keener)','Rank(Keener)']
         return keenerRank
+    
+    elif method == 'Elo':
+        from rankit.Ranker import EloRanker
+        eloRanker = EloRanker()
+        eloRanker.update(data)
+        eloRank = eloRanker.leaderboard()
+        eloRank.columns = ['Name','Score(Elo)','Rank(Elo)']
+        return eloRank    
 
     elif method == 'Markov':
         loss = loss_combine.sum(axis = 1)
@@ -130,6 +138,20 @@ def GeneCompete_Intersect(table,name,method,reg):
         pgRank = ranker.rank(data)
         pgRank.columns = ['Name','Score(PageRank)','Rank(PageRank)']
         return pgRank
+    
+    elif method == 'BiPageRank':
+        A = (np.array(win_combine)).T
+        sA = sparse.csr_matrix(A)
+        pr_A = pagerank_power(sA, p=0.85)
+        B = (np.array(loss_combine)).T
+        sB = sparse.csr_matrix(B)
+        pr_B = pagerank_power(sB, p=0.85)
+        bipagerank = pd.DataFrame(list(pr_A-pr_B), index = intersect_set)
+        bipagerank.columns = ['Score(BiPageRank)']
+        bipagerank['Name'] = list(intersect_set)
+        bipagerank = bipagerank.sort_values(by="Score(BiPageRank)", ascending=False)
+        bipagerank['Rank(BiPageRank)'] = range(1,len(bipagerank)+1)
+        return bipagerank
 
 
 @st.cache_data
@@ -269,6 +291,14 @@ def GeneCompete_Union(table,name,method,reg,FC):
         keenerRank = ranker.rank(data)
         keenerRank.columns = ['Name','Score(Keener)','Rank(Keener)']
         return keenerRank
+    
+    elif method == 'Elo':
+        from rankit.Ranker import EloRanker
+        eloRanker = EloRanker()
+        eloRanker.update(data)
+        eloRank = eloRanker.leaderboard()
+        eloRank.columns = ['Name','Score(Elo)','Rank(Elo)']
+        return eloRank
 
     elif method == 'Markov':
         loss = loss_combine.sum(axis = 1)
@@ -292,6 +322,20 @@ def GeneCompete_Union(table,name,method,reg,FC):
         pgRank = ranker.rank(data)
         pgRank.columns = ['Name','Score(PageRank)','Rank(PageRank)']
         return pgRank
+    
+    elif method == 'BiPageRank':
+        A = (np.array(win_combine)).T
+        sA = sparse.csr_matrix(A)
+        pr_A = pagerank_power(sA, p=0.85)
+        B = (np.array(loss_combine)).T
+        sB = sparse.csr_matrix(B)
+        pr_B = pagerank_power(sB, p=0.85)
+        bipagerank = pd.DataFrame(list(pr_A-pr_B), index= union_set)
+        bipagerank.columns = ['Score(BiPageRank)']
+        bipagerank['Name'] = list(union_set)
+        bipagerank = bipagerank.sort_values(by="Score(BiPageRank)", ascending=False)
+        bipagerank['Rank(BiPageRank)'] = range(1,len(bipagerank)+1)
+        return bipagerank
 
 @st.cache_data
 def Match(table,name,strategy,reg,FC = None):
@@ -599,7 +643,7 @@ if match:
         st.write(mm[0])
 
 
-method2 = st.selectbox("**Ranking Score (Select method)**", ["Win-loss", "Massey", "Colley","Keener","Markov","PageRank"])
+method2 = st.selectbox("**Ranking Score (Select method)**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPageRank"])
 submit = st.button('Submit')
 if submit:
     if not list_table1:
@@ -648,7 +692,7 @@ if submit:
 
 
 
-method1 = st.multiselect("**Compare among methods**", ["Win-loss", "Massey", "Colley","Keener","Markov","PageRank"])
+method1 = st.multiselect("**Compare among methods**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPageRank"])
 
 compare = st.button('Compare')
        
