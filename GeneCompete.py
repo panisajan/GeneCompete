@@ -570,7 +570,7 @@ st.write('**2. Column name:** The interested value that will be used as competin
 st.write('**3. Regulation:** Select Up-regulation or Down-regulation.')
 st.write('**4. Strategy:** Select Intersect or Union.')
 st.write('**5. logFC threshold:** If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with _logFC > (logFC threshold)_ in case of up-regulation and _logFC < (logFC threshold)_ for down-regulation.')
-st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Markov, or PageRank')
+st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank, or Bi-PageRank')
 
 list_table1 = list()
 for table_i in table1:
