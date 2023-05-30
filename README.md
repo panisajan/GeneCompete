@@ -1,10 +1,10 @@
-# Name of Streamlit App
+# GeneCompete
 
-Description of the app ...
+GeneCompete is a tool to combine heterogeneous gene expression datasets to order gene importance.
 
 ## Demo App
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/dataprofessor/st-app/)
+https://genecompete.streamlit.app/
 
 ## Section Heading
 
