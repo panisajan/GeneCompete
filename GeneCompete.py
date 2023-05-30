@@ -643,21 +643,21 @@ if list_table1 and name1:
 
 st.subheader("**⛹️‍♂️ Ranking scores:**")
 
-st.write('**Who are playing?**')
-match = st.button('Click')
-if match:
-    if not list_table1:
-        st.error('Error: Please upload files', icon="🚨")
-    if not name1:
-        st.error('Error: Please specify column name', icon="🚨")
-    if list_table1 and name1:
-        mm = Match(table = list_table1,name = name1,strategy = strategy1,reg = reg1,FC = FC1)
-        st.write(mm[1])
-        st.write(len(mm[0]),'pair of genes are playing games.')
-        st.write(mm[0])
+# st.write('**Who are playing?**')
+# match = st.button('Click')
+# if match:
+#     if not list_table1:
+#         st.error('Error: Please upload files', icon="🚨")
+#     if not name1:
+#         st.error('Error: Please specify column name', icon="🚨")
+#     if list_table1 and name1:
+#         mm = Match(table = list_table1,name = name1,strategy = strategy1,reg = reg1,FC = FC1)
+#         st.write(mm[1])
+#         st.write(len(mm[0]),'pair of genes are playing games.')
+#         st.write(mm[0])
 
 
-method2 = st.selectbox("**Ranking Score (Select method)**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPageRank"])
+method2 = st.selectbox("**Ranking Score**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPageRank"])
 submit = st.button('Submit')
 if submit:
     if not list_table1:
@@ -706,7 +706,7 @@ if submit:
 
 
 
-method1 = st.multiselect("**Compare among methods**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPageRank"])
+method1 = st.multiselect("**Select multiple methods**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPageRank"])
 
 compare = st.button('Compare')
        
