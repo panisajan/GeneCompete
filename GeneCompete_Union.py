@@ -3,15 +3,12 @@
 
 # In[1]:
 
-
 def GeneCompete_Union(table,name,method,reg,FC):
     import pandas as pd
     import numpy as np
     from numpy.linalg import inv
     from scipy import sparse
     from scipy.sparse.linalg import eigs
-    import sknetwork
-    from sknetwork.ranking import PageRank
     from fast_pagerank import pagerank
     from fast_pagerank import pagerank_power
     from scipy.sparse.linalg import eigs
@@ -102,74 +99,33 @@ def GeneCompete_Union(table,name,method,reg,FC):
         return win_df
 
     elif method == 'Massey':
-        M = -np.array(N_ij)
-        M[np.diag_indices_from(M)] = N_ij.sum(axis=1)
-        M[N-1,:] = 1
-
-        from numpy.linalg import inv
-        from scipy.sparse import coo_matrix
-
-        result = pd.DataFrame(columns=['TeamW', 'TeamL', 'Wscore', 'Lscore'])
         team_names = list(union_set)  # Replace with actual team names
 
         result_rows = []
         matchup_set = set()
 
         for i in range(len(w)):
-            for j in range(i+1, len(w[i])):  # Iterate only over upper triangular part
-                matchup_key = tuple(sorted([i, j]))  # Sort team indices to ensure consistent key
-                if matchup_key not in matchup_set:
-                    if w[i, j] > w[j, i]:
-                        winner = team_names[i]
-                        loser = team_names[j]
-                        wscore = w[i, j]
-                        lscore = w[j, i]
-                    else:
-                        winner = team_names[j]
-                        loser = team_names[i]
-                        wscore = w[j, i]
-                        lscore = w[i, j]
-                    result_rows.append({'TeamW': winner, 'TeamL': loser, 'Wscore': wscore, 'Lscore': lscore})
-                    matchup_set.add(matchup_key)
+            for j in range(len(w[i])):
+                if i != j:  # Exclude diagonal elements
+                    matchup_key = tuple(sorted([i, j]))  # Sort team indices to ensure consistent key
+                    if matchup_key not in matchup_set:
+                        winner = team_names[i] if w[i, j] > w[j, i] else team_names[j]
+                        loser = team_names[j] if w[i, j] > w[j, i] else team_names[i]
+                        wscore = max(w[i, j], w[j, i])
+                        lscore = min(w[i, j], w[j, i])
+                        result_rows.append({'TeamW': winner, 'TeamL': loser, 'Wscore': wscore, 'Lscore': lscore})
+                        matchup_set.add(matchup_key)
 
         result = pd.DataFrame(result_rows)
-
+        result = result[(result['Wscore'] != 0) | (result['Lscore'] != 0)]
+        
         from rankit.Table import Table
         data = Table(result, col=['TeamW', 'TeamL', 'Wscore', 'Lscore'])
-        data1 = data.table[['hidx', 'vidx', 'hscore', 'vscore', 'weight']]
 
-        m = data1.shape[0]
-        n = data.itemnum
-
-        dat = np.zeros(m * 2, dtype=np.float64)
-        col = np.zeros(m * 2, dtype=int)
-        row = np.zeros(m * 2, dtype=int)
-        y = np.zeros(m)
-
-        for i, itm in enumerate(data1.itertuples(index=False, name=None)):
-            row[i * 2] = i
-            col[i * 2] = itm[0]
-            dat[i * 2] = itm[4]
-            row[i * 2 + 1] = i
-            col[i * 2 + 1] = itm[1]
-            dat[i * 2 + 1] = -itm[4]
-            if np.abs(itm[2] - itm[3]) <= 0:
-                y[i] = 0.0
-            else:
-                y[i] = itm[4] * (itm[2] - itm[3])
-
-        # Construct the sparse matrix X
-        X = coo_matrix((dat, (row, col)), shape=(m, n)).tocsr()
-        X = X[:, np.unique(col)]  # Remove duplicate columns if any
-        
-        p_massey = (X.T).dot(y)
-        p_massey[N-1] = 0
-        r_massey = np.dot(inv(M) ,p_massey)
-        massey_df = pd.DataFrame(r_massey,index= list(union_set))
-        massey_df.columns = ['Score(Massey)']
-        massey_df['Name'] = list(union_set)
-        massey_df = massey_df.sort_values(by="Score(Massey)", ascending=False)
-        massey_df['Rank(Massey)'] = range(1,len(massey_df)+1)
+        from rankit.Ranker import MasseyRanker
+        ranker = MasseyRanker()
+        massey_df = ranker.rank(data)
+        massey_df.columns = ['Name','Score(Massey)','Rank(Massey)']
         return massey_df
 
     elif method == 'Colley':
@@ -203,30 +159,27 @@ def GeneCompete_Union(table,name,method,reg,FC):
         from numpy.linalg import inv
         from scipy.sparse import coo_matrix
 
-        result = pd.DataFrame(columns=['TeamW', 'TeamL', 'Wscore', 'Lscore'])
+        
         team_names = list(union_set)  # Replace with actual team names
 
         result_rows = []
         matchup_set = set()
 
         for i in range(len(w)):
-            for j in range(i+1, len(w[i])):  # Iterate only over upper triangular part
-                matchup_key = tuple(sorted([i, j]))  # Sort team indices to ensure consistent key
-                if matchup_key not in matchup_set:
-                    if w[i, j] > w[j, i]:
-                        winner = team_names[i]
-                        loser = team_names[j]
-                        wscore = w[i, j]
-                        lscore = w[j, i]
-                    else:
-                        winner = team_names[j]
-                        loser = team_names[i]
-                        wscore = w[j, i]
-                        lscore = w[i, j]
-                    result_rows.append({'TeamW': winner, 'TeamL': loser, 'Wscore': wscore, 'Lscore': lscore})
-                    matchup_set.add(matchup_key)
+            for j in range(len(w[i])):
+                if i != j:  # Exclude diagonal elements
+                    matchup_key = tuple(sorted([i, j]))  # Sort team indices to ensure consistent key
+                    if matchup_key not in matchup_set:
+                        winner = team_names[i] if w[i, j] > w[j, i] else team_names[j]
+                        loser = team_names[j] if w[i, j] > w[j, i] else team_names[i]
+                        wscore = max(w[i, j], w[j, i])
+                        lscore = min(w[i, j], w[j, i])
+                        result_rows.append({'TeamW': winner, 'TeamL': loser, 'Wscore': wscore, 'Lscore': lscore})
+                        matchup_set.add(matchup_key)
 
         result = pd.DataFrame(result_rows)
+        result = result[(result['Wscore'] != 0) | (result['Lscore'] != 0)]
+
 
         from rankit.Table import Table
         data = Table(result, col=['TeamW', 'TeamL', 'Wscore', 'Lscore'])
@@ -290,75 +243,31 @@ def GeneCompete_Union(table,name,method,reg,FC):
         win_df['Rank(Win)'] = range(1,len(win_df)+1)
         
         ## Massey
-        
-        M = -np.array(N_ij)
-        M[np.diag_indices_from(M)] = N_ij.sum(axis=1)
-        M[N-1,:] = 1
-
-        from numpy.linalg import inv
-        from scipy.sparse import coo_matrix
-
-        result = pd.DataFrame(columns=['TeamW', 'TeamL', 'Wscore', 'Lscore'])
         team_names = list(union_set)  # Replace with actual team names
 
         result_rows = []
         matchup_set = set()
 
         for i in range(len(w)):
-            for j in range(i+1, len(w[i])):  # Iterate only over upper triangular part
-                matchup_key = tuple(sorted([i, j]))  # Sort team indices to ensure consistent key
-                if matchup_key not in matchup_set:
-                    if w[i, j] > w[j, i]:
-                        winner = team_names[i]
-                        loser = team_names[j]
-                        wscore = w[i, j]
-                        lscore = w[j, i]
-                    else:
-                        winner = team_names[j]
-                        loser = team_names[i]
-                        wscore = w[j, i]
-                        lscore = w[i, j]
-                    result_rows.append({'TeamW': winner, 'TeamL': loser, 'Wscore': wscore, 'Lscore': lscore})
-                    matchup_set.add(matchup_key)
+            for j in range(len(w[i])):
+                if i != j:  # Exclude diagonal elements
+                    matchup_key = tuple(sorted([i, j]))  # Sort team indices to ensure consistent key
+                    if matchup_key not in matchup_set:
+                        winner = team_names[i] if w[i, j] > w[j, i] else team_names[j]
+                        loser = team_names[j] if w[i, j] > w[j, i] else team_names[i]
+                        wscore = max(w[i, j], w[j, i])
+                        lscore = min(w[i, j], w[j, i])
+                        result_rows.append({'TeamW': winner, 'TeamL': loser, 'Wscore': wscore, 'Lscore': lscore})
+                        matchup_set.add(matchup_key)
 
         result = pd.DataFrame(result_rows)
-
+        result = result[(result['Wscore'] != 0) | (result['Lscore'] != 0)]
         from rankit.Table import Table
         data = Table(result, col=['TeamW', 'TeamL', 'Wscore', 'Lscore'])
-        data1 = data.table[['hidx', 'vidx', 'hscore', 'vscore', 'weight']]
-
-        m = data1.shape[0]
-        n = data.itemnum
-
-        dat = np.zeros(m * 2, dtype=np.float64)
-        col = np.zeros(m * 2, dtype=int)
-        row = np.zeros(m * 2, dtype=int)
-        y = np.zeros(m)
-
-        for i, itm in enumerate(data1.itertuples(index=False, name=None)):
-            row[i * 2] = i
-            col[i * 2] = itm[0]
-            dat[i * 2] = itm[4]
-            row[i * 2 + 1] = i
-            col[i * 2 + 1] = itm[1]
-            dat[i * 2 + 1] = -itm[4]
-            if np.abs(itm[2] - itm[3]) <= 0:
-                y[i] = 0.0
-            else:
-                y[i] = itm[4] * (itm[2] - itm[3])
-
-        # Construct the sparse matrix X
-        X = coo_matrix((dat, (row, col)), shape=(m, n)).tocsr()
-        X = X[:, np.unique(col)]  # Remove duplicate columns if any
-        
-        p_massey = (X.T).dot(y)
-        p_massey[N-1] = 0
-        r_massey = np.dot(inv(M) ,p_massey)
-        massey_df = pd.DataFrame(r_massey,index= list(union_set))
-        massey_df.columns = ['Score(Massey)']
-        massey_df['Name'] = list(union_set)
-        massey_df = massey_df.sort_values(by="Score(Massey)", ascending=False)
-        massey_df['Rank(Massey)'] = range(1,len(massey_df)+1)
+        from rankit.Ranker import MasseyRanker
+        ranker = MasseyRanker()
+        massey_df = ranker.rank(data)
+        massey_df.columns = ['Name','Score(Massey)','Rank(Massey)']
         
         ## Colley
     
@@ -447,4 +356,3 @@ def GeneCompete_Union(table,name,method,reg,FC):
         for df in dfs[1:]:
             merged_df = pd.merge(merged_df, df, on='Name')
         return merged_df
-
