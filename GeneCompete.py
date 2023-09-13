@@ -11,8 +11,8 @@ import numpy as np
 from numpy.linalg import inv
 from scipy import sparse
 from scipy.sparse.linalg import eigs
-import sknetwork
-from sknetwork.ranking import PageRank
+# import sknetwork
+# from sknetwork.ranking import PageRank
 from fast_pagerank import pagerank
 from fast_pagerank import pagerank_power
 from scipy.sparse.linalg import eigs
@@ -24,8 +24,8 @@ def GeneCompete_Intersect(table,name,method,reg):
     from numpy.linalg import inv
     from scipy import sparse
     from scipy.sparse.linalg import eigs
-    import sknetwork
-    from sknetwork.ranking import PageRank
+    # import sknetwork
+    # from sknetwork.ranking import PageRank
     from fast_pagerank import pagerank
     from fast_pagerank import pagerank_power
     from scipy.sparse.linalg import eigs
@@ -172,8 +172,8 @@ def GeneCompete_Union(table,name,method,reg,FC):
     from numpy.linalg import inv
     from scipy import sparse
     from scipy.sparse.linalg import eigs
-    import sknetwork
-    from sknetwork.ranking import PageRank
+    # import sknetwork
+    # from sknetwork.ranking import PageRank
     from fast_pagerank import pagerank
     from fast_pagerank import pagerank_power
     from scipy.sparse.linalg import eigs
