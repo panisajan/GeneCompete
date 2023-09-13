@@ -71,7 +71,7 @@ def GeneCompete_Union(table,name,method,reg,FC):
 
     elif reg == 'Down-regulation':
         for i in range(len(table)):
-            all_data1[i] = (table[i])[(table[i][name] > -FC)]
+            all_data1[i] = (table[i])[(table[i][name] < -FC)]
 
         check_list = list(set(l.index) for l in (all_data1))
         union_set = set(all_data1[0].index)
