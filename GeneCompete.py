@@ -17,7 +17,7 @@ from fast_pagerank import pagerank
 from fast_pagerank import pagerank_power
 from scipy.sparse.linalg import eigs
 
-@st.cache_data
+@st.experimental_memo
 def GeneCompete_Intersect(table,name,method,reg):
     import pandas as pd
     import numpy as np
