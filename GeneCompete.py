@@ -309,7 +309,7 @@ if list_table1 and name1:
         col1.metric("**:red[Number of genes:]**",can_num)
         col2.metric("**:red[Strategy:]**",strategy1)
         col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
-        col4.metric("**:red[logFC threshold:]**",FC1)
+        col4.metric("**:red[logFC threshold:]**",FC1 if reg1=='Up-regulation' else -FC1)
 
     else:
         #FC1 = None
