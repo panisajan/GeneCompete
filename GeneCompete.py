@@ -263,7 +263,7 @@ for table_i in table1:
 
 name1 = st.sidebar.text_input("**Column name**","logFC")
 reg1 = st.sidebar.radio("**Regulation**", ["Up-regulation","Down-regulation"])
-strategy1 = st.sidebar.radio("**Strategy**", ["Intersect","Union"])
+strategy1 = st.sidebar.radio("**Strategy**", ["Union","Intersect"])
 # FC1 = st.sidebar.slider('**logFC threshold**', 0.0, 5.0, step = 0.1)
 
 
