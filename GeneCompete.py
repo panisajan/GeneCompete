@@ -133,7 +133,7 @@ def Match(table,name,strategy,reg,FC = None):
         
         elif reg == 'Down-regulation':
             for i in range(len(table)):
-                all_data1[i] = (table[i])[(table[i][name] < FC)]
+                all_data1[i] = (table[i])[(table[i][name] < -FC)]
 
             check_list = list(set(l.index) for l in (all_data1))
             union_set = set(all_data1[0].index)
@@ -194,7 +194,7 @@ def num_candidate(strategy,table,reg,name,FC=None):
 
         elif reg == 'Down-regulation':
             for i in range(len(table)):
-                all_data1[i] = (table[i])[(table[i][name] > -FC)] # logFC < 0
+                all_data1[i] = (table[i])[(table[i][name] < -FC)] # logFC < 0
 
             check_list = list(set(l.index) for l in (all_data1))
             union_set = set(all_data1[0].index)
