@@ -167,7 +167,7 @@ def GeneCompete_Intersect(table,name,method,reg):
         return bipagerank
 
 
-@st.cache_data
+##@st.cache_data
 def GeneCompete_Union(table,name,method,reg,FC):
     import pandas as pd
     import numpy as np
@@ -179,7 +179,7 @@ def GeneCompete_Union(table,name,method,reg,FC):
     from fast_pagerank import pagerank
     from fast_pagerank import pagerank_power
     from scipy.sparse.linalg import eigs
-    @st.cache_data
+    ##@st.cache_data
     def reorder(dat_matrix,dat_remain):
         a = pd.concat([dat_matrix, dat_remain]).fillna(0)
         a = a.reindex(union_set,columns=union_set)
@@ -364,7 +364,7 @@ def Match(table,name,strategy,reg,FC = None):
             intersect_set = intersect_set.intersection(s)
         N = len(intersect_set) ## number of games
         
-        @st.cache_data
+        #@st.cache_data
         def winloss_up(data):
             dat_fil = data.loc[list(intersect_set),]
             win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[None,:] - np.array(dat_fil[name])[:,None])) + 1))
