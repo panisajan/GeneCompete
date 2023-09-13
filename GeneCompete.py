@@ -17,7 +17,7 @@ from fast_pagerank import pagerank
 from fast_pagerank import pagerank_power
 from scipy.sparse.linalg import eigs
 
-@st.experimental_memo
+@st.cache_data
 def GeneCompete_Intersect(table,name,method,reg):
     import pandas as pd
     import numpy as np
@@ -36,8 +36,7 @@ def GeneCompete_Intersect(table,name,method,reg):
         intersect_set = intersect_set.intersection(s)
     N = len(intersect_set) ## number of games
     
-    ## @st.cache_data
-    @st.experimental_memo
+    @st.cache_data
     def winloss_up(data):
         dat_fil = data.loc[list(intersect_set),]
         win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[None,:] - np.array(dat_fil[name])[:,None])) + 1))
@@ -46,8 +45,7 @@ def GeneCompete_Intersect(table,name,method,reg):
         loss[np.diag_indices_from(loss)] = 0
         return win, loss
     
-    ##@st.cache_data
-    @st.experimental_memo
+    @st.cache_data
     def winloss_down(data):
         dat_fil = data.loc[list(intersect_set),]
         win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[:,None] - np.array(dat_fil[name])[None,:])) + 1))
@@ -167,26 +165,25 @@ def GeneCompete_Intersect(table,name,method,reg):
         return bipagerank
 
 
-##@st.cache_data
+@st.cache_data
 def GeneCompete_Union(table,name,method,reg,FC):
     import pandas as pd
     import numpy as np
     from numpy.linalg import inv
     from scipy import sparse
     from scipy.sparse.linalg import eigs
-    # import sknetwork
-    # from sknetwork.ranking import PageRank
+    import sknetwork
+    from sknetwork.ranking import PageRank
     from fast_pagerank import pagerank
     from fast_pagerank import pagerank_power
     from scipy.sparse.linalg import eigs
-    ##@st.cache_data
+    @st.cache_data
     def reorder(dat_matrix,dat_remain):
         a = pd.concat([dat_matrix, dat_remain]).fillna(0)
         a = a.reindex(union_set,columns=union_set)
         return a
     
-    ## @st.cache_data
-    @st.experimental_memo
+    @st.cache_data
     def winloss_up(data):
         dat_fil = data.loc[(data.index).intersection(union_set),]
         remain = set([item for item in union_set if not(pd.isnull(item)) == True])-set(data.index)
@@ -201,8 +198,7 @@ def GeneCompete_Union(table,name,method,reg,FC):
         loss_all = reorder(loss_dat,matrix_remain)
         return win_all, loss_all
     
-    ##@st.cache_data
-    @st.experimental_memo
+    @st.cache_data
     def winloss_down(data):
         dat_fil = data.loc[(data.index).intersection(union_set),]
         remain = set([item for item in union_set if not(pd.isnull(item)) == True])-set(data.index)
@@ -352,7 +348,7 @@ def GeneCompete_Union(table,name,method,reg,FC):
         bipagerank['Rank(BiPageRank)'] = range(1,len(bipagerank)+1)
         return bipagerank
 
-##@st.cache_data
+@st.cache_data
 def Match(table,name,strategy,reg,FC = None):
     import pandas as pd
     import numpy as np
@@ -364,7 +360,7 @@ def Match(table,name,strategy,reg,FC = None):
             intersect_set = intersect_set.intersection(s)
         N = len(intersect_set) ## number of games
         
-        #@st.cache_data
+        @st.cache_data
         def winloss_up(data):
             dat_fil = data.loc[list(intersect_set),]
             win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[None,:] - np.array(dat_fil[name])[:,None])) + 1))
@@ -373,7 +369,7 @@ def Match(table,name,strategy,reg,FC = None):
             loss[np.diag_indices_from(loss)] = 0
             return win, loss
         
-        ##@st.cache_data
+        @st.cache_data
         def winloss_down(data):
             dat_fil = data.loc[list(intersect_set),]
             win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[:,None] - np.array(dat_fil[name])[None,:])) + 1))
@@ -406,13 +402,13 @@ def Match(table,name,strategy,reg,FC = None):
 
     elif strategy == 'Union':
         
-        ##@st.cache_data
+        @st.cache_data
         def reorder(dat_matrix,dat_remain):
             a = pd.concat([dat_matrix, dat_remain]).fillna(0)
             a = a.reindex(union_set,columns=union_set)
             return a
         
-        ##@st.cache_data
+        @st.cache_data
         def winloss_up(data):
             dat_fil = data.loc[(data.index).intersection(union_set),]
             remain = set([item for item in union_set if not(pd.isnull(item)) == True])-set(data.index)
@@ -427,7 +423,7 @@ def Match(table,name,strategy,reg,FC = None):
             loss_all = reorder(loss_dat,matrix_remain)
             return win_all, loss_all
         
-        ##@st.cache_data
+        @st.cache_data
         def winloss_down(data):
             dat_fil = data.loc[(data.index).intersection(union_set),]
             remain = set([item for item in union_set if not(pd.isnull(item)) == True])-set(data.index)
@@ -493,7 +489,7 @@ def Match(table,name,strategy,reg,FC = None):
 
     return result, win_combine
 
-##@st.cache_data
+@st.cache_data
 def num_candidate(strategy,table,reg,name,FC=None):
     if strategy == 'Intersect':
         check_list = list(set(l.index) for l in (table))
@@ -702,7 +698,7 @@ if submit:
                 st.write('Total genes with LFC <',FC1,'are',len(out1))
         st.write(out1)
     
-        ##@st.cache_data
+        @st.cache_data
         def convert_df(df):
             return df.to_csv().encode('utf-8')
 
@@ -755,7 +751,7 @@ if compare:
                 st.write('Total genes with LFC <',FC1,'are',len(score1))
         st.write(score1)
     
-        ##@st.cache_data
+        @st.cache_data
         def convert_df(df):
             return df.to_csv().encode('utf-8')
 
