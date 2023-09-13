@@ -16,337 +16,8 @@ from scipy.sparse.linalg import eigs
 from fast_pagerank import pagerank
 from fast_pagerank import pagerank_power
 from scipy.sparse.linalg import eigs
-
-@st.cache_data
-def GeneCompete_Intersect(table,name,method,reg):
-    import pandas as pd
-    import numpy as np
-    from numpy.linalg import inv
-    from scipy import sparse
-    from scipy.sparse.linalg import eigs
-    # import sknetwork
-    # from sknetwork.ranking import PageRank
-    from fast_pagerank import pagerank
-    from fast_pagerank import pagerank_power
-    from scipy.sparse.linalg import eigs
-
-    check_list = list(set(l.index) for l in (table))
-    intersect_set = set(table[0].index)
-    for s in check_list:
-        intersect_set = intersect_set.intersection(s)
-    N = len(intersect_set) ## number of games
-    
-    @st.cache_data
-    def winloss_up(data):
-        dat_fil = data.loc[list(intersect_set),]
-        win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[None,:] - np.array(dat_fil[name])[:,None])) + 1))
-        win[np.diag_indices_from(win)] = 0
-        loss = abs(np.sign(win - 1))
-        loss[np.diag_indices_from(loss)] = 0
-        return win, loss
-    
-    @st.cache_data
-    def winloss_down(data):
-        dat_fil = data.loc[list(intersect_set),]
-        win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[:,None] - np.array(dat_fil[name])[None,:])) + 1))
-        win[np.diag_indices_from(win)] = 0
-        loss = abs(np.sign(win - 1))
-        loss[np.diag_indices_from(loss)] = 0
-        return win, loss
-        
-    if reg == 'Up-regulation':
-        a = []
-        win_combine = loss_combine = np.zeros((N, N))
-        for i in range(len(table)):
-            a = winloss_up(table[i])
-            win_combine = win_combine + a[0]
-            loss_combine = loss_combine + a[1]
-            
-    elif reg == 'Down-regulation':
-        a = []
-        win_combine = loss_combine = np.zeros((N, N))
-        for i in range(len(table)):
-            a = winloss_down(table[i])
-            win_combine = win_combine + a[0]
-            loss_combine = loss_combine + a[1]
-    
-    test1 = pd.DataFrame(win_combine)
-    test1.index = test1.columns = intersect_set
-
-    result = pd.DataFrame(columns=['TeamW', 'TeamL', 'Wscore', 'Lscore'])
-    i, j = np.nonzero(win_combine)
-    winners = np.where(win_combine[i, j] > win_combine[j, i], i, j)
-    losers = np.where(win_combine[i, j] > win_combine[j, i], j, i)
-    wscores = np.maximum(win_combine[i, j], win_combine[j, i])
-    lscores = np.minimum(win_combine[i, j], win_combine[j, i])
-    team_names = test1.columns.values
-    winners = team_names[winners]
-    losers = team_names[losers]
-    result['TeamW'] = winners
-    result['TeamL'] = losers
-    result['Wscore'] = wscores
-    result['Lscore'] = lscores
-
-
-    from rankit.Table import Table
-    data = Table(result, col = ['TeamW', 'TeamL', 'Wscore', 'Lscore'])
-
-    if method == 'Win-loss':
-        win = win_combine.sum(axis = 1)
-        win_df = pd.DataFrame({'Name':list(intersect_set),'Score(Win)':win})
-        win_df = win_df.sort_values(by="Score(Win)", ascending=False)
-        win_df['Rank(Win)'] = range(1,len(win_df)+1)
-        return win_df
-
-    elif method == 'Massey':
-        from rankit.Ranker import MasseyRanker
-        ranker = MasseyRanker()
-        masseyRank = ranker.rank(data)
-        masseyRank.columns = ['Name','Score(Massey)','Rank(Massey)']
-        return masseyRank
-
-    elif method == 'Colley':
-        from rankit.Ranker import ColleyRanker
-        ranker = ColleyRanker()
-        colleyRank = ranker.rank(data)
-        colleyRank.columns = ['Name','Score(Colley)','Rank(Colley)']
-        return colleyRank
-
-    elif method == 'Keener':
-        from rankit.Ranker import KeenerRanker
-        ranker = KeenerRanker(threshold=1e-4)
-        keenerRank = ranker.rank(data)
-        keenerRank.columns = ['Name','Score(Keener)','Rank(Keener)']
-        return keenerRank
-    
-    elif method == 'Elo':
-        from rankit.Ranker import EloRanker
-        eloRanker = EloRanker()
-        eloRanker.update(data)
-        eloRank = eloRanker.leaderboard()
-        eloRank.columns = ['Name','Score(Elo)','Rank(Elo)']
-        return eloRank    
-
-    elif method == 'Markov':
-        loss = loss_combine.sum(axis = 1)
-        N_G = -win_combine
-        N_G[np.diag_indices_from(N_G)] = loss
-        P2 = np.vstack([N_G,np.ones((1, N))])
-        z2 = np.zeros((1, N+1))
-        z2[0,N] = 1
-        x_qr2 = np.linalg.lstsq(P2, z2.T,rcond=None)[0]
-        df_markov = pd.DataFrame(x_qr2)
-        df_markov.columns = ['Score(Markov)']
-        df_markov['Name'] = list(intersect_set)
-        df_markov = df_markov.sort_values(by="Score(Markov)", ascending=False)
-        df_markov['Rank(Markov)'] = range(1,len(df_markov)+1)
-        return df_markov
-
-    elif method == 'PageRank':
-        from rankit.Ranker import MarkovRanker
-        #ranker = MarkovRanker(restart=0.3, threshold=1e-4)
-        ranker = MarkovRanker(restart=0.85, threshold=1e-4)
-        pgRank = ranker.rank(data)
-        pgRank.columns = ['Name','Score(PageRank)','Rank(PageRank)']
-        return pgRank
-    
-    elif method == 'BiPageRank':
-        A = (np.array(win_combine)).T
-        sA = sparse.csr_matrix(A)
-        pr_A = pagerank_power(sA, p=0.85)
-        B = (np.array(loss_combine)).T
-        sB = sparse.csr_matrix(B)
-        pr_B = pagerank_power(sB, p=0.85)
-        bipagerank = pd.DataFrame(list(pr_A-pr_B), index = intersect_set)
-        bipagerank.columns = ['Score(BiPageRank)']
-        bipagerank['Name'] = list(intersect_set)
-        bipagerank = bipagerank.sort_values(by="Score(BiPageRank)", ascending=False)
-        bipagerank['Rank(BiPageRank)'] = range(1,len(bipagerank)+1)
-        return bipagerank
-
-
-@st.cache_data
-def GeneCompete_Union(table,name,method,reg,FC):
-    import pandas as pd
-    import numpy as np
-    from numpy.linalg import inv
-    from scipy import sparse
-    from scipy.sparse.linalg import eigs
-    import sknetwork
-    from sknetwork.ranking import PageRank
-    from fast_pagerank import pagerank
-    from fast_pagerank import pagerank_power
-    from scipy.sparse.linalg import eigs
-    @st.cache_data
-    def reorder(dat_matrix,dat_remain):
-        a = pd.concat([dat_matrix, dat_remain]).fillna(0)
-        a = a.reindex(union_set,columns=union_set)
-        return a
-    
-    @st.cache_data
-    def winloss_up(data):
-        dat_fil = data.loc[(data.index).intersection(union_set),]
-        remain = set([item for item in union_set if not(pd.isnull(item)) == True])-set(data.index)
-        matrix_remain = pd.DataFrame(np.zeros((len(remain),len(remain))),index=list(remain),columns=list(remain))
-        win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[None,:] - np.array(dat_fil[name])[:,None])) + 1))
-        win[np.diag_indices_from(win)] = 0
-        loss = abs(np.sign(win - 1))
-        loss[np.diag_indices_from(loss)] = 0
-        win_dat = pd.DataFrame(win,index = dat_fil.index, columns = dat_fil.index)
-        loss_dat = pd.DataFrame(loss,index = dat_fil.index, columns = dat_fil.index)
-        win_all = reorder(win_dat,matrix_remain)
-        loss_all = reorder(loss_dat,matrix_remain)
-        return win_all, loss_all
-    
-    @st.cache_data
-    def winloss_down(data):
-        dat_fil = data.loc[(data.index).intersection(union_set),]
-        remain = set([item for item in union_set if not(pd.isnull(item)) == True])-set(data.index)
-        matrix_remain = pd.DataFrame(np.zeros((len(remain),len(remain))),index=list(remain),columns=list(remain))
-        win = np.transpose(np.sign(np.sign((np.array(dat_fil[name])[:,None] - np.array(dat_fil[name])[None,:])) + 1))
-        win[np.diag_indices_from(win)] = 0
-        loss = abs(np.sign(win - 1))
-        loss[np.diag_indices_from(loss)] = 0
-        win_dat = pd.DataFrame(win,index = dat_fil.index, columns = dat_fil.index)
-        loss_dat = pd.DataFrame(loss,index = dat_fil.index, columns = dat_fil.index)
-        win_all = reorder(win_dat,matrix_remain)
-        loss_all = reorder(loss_dat,matrix_remain)
-        return win_all, loss_all
-    
-    all_data1 = []
-    for i in range(len(table)):
-        all_data1.append(i)
-
-    if reg == 'Up-regulation':
-        for i in range(len(table)):
-            all_data1[i] = (table[i])[(table[i][name] > FC)]
-
-        check_list = list(set(l.index) for l in (all_data1))
-        union_set = set(all_data1[0].index)
-        for s in check_list:
-            union_set = union_set.union(s)
-        N = len(union_set) ## number of games
-        a = []
-        win_combine = loss_combine = np.zeros((N, N))
-        for i in range(len(all_data1)):
-            a = winloss_up(all_data1[i])
-            win_combine = win_combine + a[0]
-            loss_combine = loss_combine + a[1]
-        
-    
-    elif reg == 'Down-regulation':
-        for i in range(len(table)):
-            all_data1[i] = (table[i])[(table[i][name] < FC)]
-
-        check_list = list(set(l.index) for l in (all_data1))
-        union_set = set(all_data1[0].index)
-        for s in check_list:
-            union_set = union_set.union(s)
-        N = len(union_set) ## number of games 
-        a = []
-        win_combine = loss_combine = np.zeros((N, N))
-        for i in range(len(all_data1)):
-            a = winloss_down(all_data1[i])
-            win_combine = win_combine + a[0]
-            loss_combine = loss_combine + a[1]
-    
-    # N_ij
-    N_ij = win_combine + loss_combine # number of games between i  and j
-    
-    win_combine = np.array(win_combine)
-    test1 = pd.DataFrame(win_combine)
-    test1.index = test1.columns = union_set
-    
-    result = pd.DataFrame(columns=['TeamW', 'TeamL', 'Wscore', 'Lscore'])
-    i, j = np.nonzero(win_combine)
-    winners = np.where(win_combine[i, j] > win_combine[j, i], i, j)
-    losers = np.where(win_combine[i, j] > win_combine[j, i], j, i)
-    wscores = np.maximum(win_combine[i, j], win_combine[j, i])
-    lscores = np.minimum(win_combine[i, j], win_combine[j, i])
-    team_names = test1.columns.values
-    winners = team_names[winners]
-    losers = team_names[losers]
-    result['TeamW'] = winners
-    result['TeamL'] = losers
-    result['Wscore'] = wscores
-    result['Lscore'] = lscores
-
-    from rankit.Table import Table
-    data = Table(result, col = ['TeamW', 'TeamL', 'Wscore', 'Lscore'])
-
-    if method == 'Win-loss':
-        win_perc = test1/N_ij
-        win_s = win_perc.sum(axis=1)
-        win_df = pd.DataFrame({'Name':list(union_set),'Score(Win)':win_s})
-        win_df = win_df.sort_values(by="Score(Win)", ascending=False)
-        win_df['Rank(Win)'] = range(1,len(win_df)+1)
-        return win_df
-
-    elif method == 'Massey':
-        from rankit.Ranker import MasseyRanker
-        ranker = MasseyRanker()
-        masseyRank = ranker.rank(data)
-        masseyRank.columns = ['Name','Score(Massey)','Rank(Massey)']
-        return masseyRank
-
-    elif method == 'Colley':
-        from rankit.Ranker import ColleyRanker
-        ranker = ColleyRanker()
-        colleyRank = ranker.rank(data)
-        colleyRank.columns = ['Name','Score(Colley)','Rank(Colley)']
-        return colleyRank
-
-    elif method == 'Keener':
-        from rankit.Ranker import KeenerRanker
-        ranker = KeenerRanker(threshold=1e-4)
-        keenerRank = ranker.rank(data)
-        keenerRank.columns = ['Name','Score(Keener)','Rank(Keener)']
-        return keenerRank
-    
-    elif method == 'Elo':
-        from rankit.Ranker import EloRanker
-        eloRanker = EloRanker()
-        eloRanker.update(data)
-        eloRank = eloRanker.leaderboard()
-        eloRank.columns = ['Name','Score(Elo)','Rank(Elo)']
-        return eloRank
-
-    elif method == 'Markov':
-        loss = loss_combine.sum(axis = 1)
-        N_G = -win_combine
-        N_G[np.diag_indices_from(N_G)] = loss
-        P2 = np.vstack([N_G,np.ones((1, N))])
-        z2 = np.zeros((1, N+1))
-        z2[0,N] = 1
-        x_qr2 = np.linalg.lstsq(P2, z2.T,rcond=None)[0]
-        df_markov = pd.DataFrame(((x_qr2.T*(np.array(N_ij.sum(axis=1))))).T)
-        df_markov.columns = ['Score(Markov)']
-        df_markov['Name'] = list(union_set)
-        df_markov = df_markov.sort_values(by="Score(Markov)", ascending=False)
-        df_markov['Rank(Markov)'] = range(1,len(df_markov)+1)
-        return df_markov
-
-    elif method == 'PageRank':
-        from rankit.Ranker import MarkovRanker
-        #ranker = MarkovRanker(restart=0.3, threshold=1e-4)
-        ranker = MarkovRanker(restart=0.85, threshold=1e-4)
-        pgRank = ranker.rank(data)
-        pgRank.columns = ['Name','Score(PageRank)','Rank(PageRank)']
-        return pgRank
-    
-    elif method == 'BiPageRank':
-        A = (np.array(win_combine)).T
-        sA = sparse.csr_matrix(A)
-        pr_A = pagerank_power(sA, p=0.85)
-        B = (np.array(loss_combine)).T
-        sB = sparse.csr_matrix(B)
-        pr_B = pagerank_power(sB, p=0.85)
-        bipagerank = pd.DataFrame(list(pr_A-pr_B), index= union_set)
-        bipagerank.columns = ['Score(BiPageRank)']
-        bipagerank['Name'] = list(union_set)
-        bipagerank = bipagerank.sort_values(by="Score(BiPageRank)", ascending=False)
-        bipagerank['Rank(BiPageRank)'] = range(1,len(bipagerank)+1)
-        return bipagerank
+from GeneCompete_Intersect import*
+from GeneCompete_Union import*
 
 @st.cache_data
 def Match(table,name,strategy,reg,FC = None):
@@ -492,6 +163,15 @@ def Match(table,name,strategy,reg,FC = None):
 @st.cache_data
 def num_candidate(strategy,table,reg,name,FC=None):
     if strategy == 'Intersect':
+        # all_data1 = []
+        # for i in range(len(table)):
+        #     all_data1.append(i)        
+        # if reg == 'Up-regulation':  
+        #     for i in range(len(table)):
+        #         all_data1[i] = (table[i])[(table[i][name] > FC)] # logFC > 0
+        # elif reg == 'Down-regulation':  
+        #     for i in range(len(table)):
+        #         all_data1[i] = (table[i])[(table[i][name] > -FC)] # logFC > 0
         check_list = list(set(l.index) for l in (table))
         intersect_set = set(table[0].index)
         for s in check_list:
@@ -514,7 +194,7 @@ def num_candidate(strategy,table,reg,name,FC=None):
 
         elif reg == 'Down-regulation':
             for i in range(len(table)):
-                all_data1[i] = (table[i])[(table[i][name] < FC)] # logFC < 0
+                all_data1[i] = (table[i])[(table[i][name] > -FC)] # logFC < 0
 
             check_list = list(set(l.index) for l in (all_data1))
             union_set = set(all_data1[0].index)
@@ -573,7 +253,7 @@ st.write('**2. Column name:** The interested value that will be used as competin
 st.write('**3. Regulation:** Select Up-regulation or Down-regulation.')
 st.write('**4. Strategy:** Select Intersect or Union.')
 st.write('**5. logFC threshold:** If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with _logFC > (logFC threshold)_ in case of up-regulation and _logFC < (logFC threshold)_ for down-regulation.')
-st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank, or Bi-PageRank')
+st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank., or Bi-PageRank')
 
 list_table1 = list()
 for table_i in table1:
@@ -584,10 +264,11 @@ for table_i in table1:
 name1 = st.sidebar.text_input("**Column name**","logFC")
 reg1 = st.sidebar.radio("**Regulation**", ["Up-regulation","Down-regulation"])
 strategy1 = st.sidebar.radio("**Strategy**", ["Intersect","Union"])
+# FC1 = st.sidebar.slider('**logFC threshold**', 0.0, 5.0, step = 0.1)
 
 
 if strategy1 == 'Union':
-    FC1 = st.sidebar.slider('**logFC threshold**', -5.0, 5.0, step = 0.1)
+    FC1 = st.sidebar.slider('**logFC threshold**', 0.0, 5.0, step = 0.1)
     #FC1 = st.sidebar.number_input('**logFC threshold**')
 else:
     FC1 = None
@@ -618,7 +299,11 @@ if list_table1 and name1:
     st.write('👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇')
     #st.write('🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹')
 ## check
-
+    # col1, col2, col3, col4 = st.columns(4)
+    # col1.metric("**:red[Number of genes:]**",can_num)
+    # col2.metric("**:red[Strategy:]**",strategy1)
+    # col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
+    # col4.metric("**:red[logFC threshold:]**",FC1)
     if strategy1 == 'Union':
         col1, col2, col3, col4 = st.columns(4)
         col1.metric("**:red[Number of genes:]**",can_num)
@@ -627,11 +312,12 @@ if list_table1 and name1:
         col4.metric("**:red[logFC threshold:]**",FC1)
 
     else:
-        FC1 = None
+        #FC1 = None
         col1, col2, col3 = st.columns(3)
         col1.metric("**:red[Number of genes:]**",can_num)
         col2.metric("**:red[Strategy:]**",strategy1)
         col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
+        #col4.metric("**:red[logFC threshold:]**",FC1)
 
     st.write('👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆')
     #st.write('🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹')
@@ -657,7 +343,7 @@ st.subheader("**⛹️‍♂️ Ranking scores:**")
 #         st.write(mm[0])
 
 
-method2 = st.selectbox("**Ranking Score**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPageRank"])
+method2 = st.selectbox("**Ranking Score**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank.","BiPageRank"])
 submit = st.button('Submit')
 if submit:
     if not list_table1:
@@ -677,10 +363,11 @@ if submit:
         #with st.spinner('Please wait ...'):
         #begin = time.time()
         #score = []
-        if strategy1 == 'Union':
-            out1 = GeneCompete_Union(table = list_table1,name = name1,method = method2,reg = reg1,FC = FC1)
-        elif strategy1 == 'Intersect':
-            out1 = GeneCompete_Intersect(table = list_table1,name = name1,method = method2,reg = reg1)
+        with st.spinner('Please wait ...'):
+            if strategy1 == 'Union':
+                out1 = GeneCompete_Union(table = list_table1,name = name1,method = method2,reg = reg1,FC = FC1)
+            elif strategy1 == 'Intersect':
+                out1 = GeneCompete_Intersect(table = list_table1,name = name1,method = method2,reg = reg1, FC=None)
         #end = time.time()
         #time.sleep(5)
         #score.append(out)
@@ -706,7 +393,7 @@ if submit:
 
 
 
-method1 = st.multiselect("**Select multiple methods**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPageRank"])
+method1 = st.multiselect("**Select multiple methods**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank.","BiPageRank"])
 
 compare = st.button('Compare')
        
@@ -727,16 +414,21 @@ if compare:
         #st.write('Time:',end-begin)
         #with st.spinner('Please wait ...'):
             #begin = time.time()
-        score = []
-        for met in method1:
-            if strategy1 == 'Union':
-                out = GeneCompete_Union(table = list_table1,name = name1,method = met,reg = reg1,FC = FC1)
-            elif strategy1 == 'Intersect':
-                out = GeneCompete_Intersect(table = list_table1,name = name1,method = met,reg = reg1)
-                #st.write(out)    
-            score.append(out)
-        dfs = [df.set_index('Name') for df in score]
-        score1 = pd.concat(dfs, axis=1)
+        #score = []
+        with st.spinner('Please wait ...'):
+            if strategy1 == 'Intersect':
+                out = GeneCompete_Intersect(table = list_table1,name = name1,method = method1,reg = reg1,FC=None)
+            elif strategy1 == 'Union':
+                out = GeneCompete_Union(table = list_table1,name = name1,method = method1,reg = reg1,FC=FC1)
+        # for met in method1:
+        #     if strategy1 == 'Union':
+        #         out = GeneCompete_Union(table = list_table1,name = name1,method = met,reg = reg1,FC = FC1)
+        #     elif strategy1 == 'Intersect':
+        #         out = GeneCompete_Intersect(table = list_table1,name = name1,method = met,reg = reg1)
+        #         #st.write(out)    
+        #     score.append(out)
+        # dfs = [df.set_index('Name') for df in score]
+        # score1 = pd.concat(dfs, axis=1)
 
 
         st.success('Success! Here is your ranking score.')
@@ -746,16 +438,16 @@ if compare:
         elif strategy1 == 'Union':
             st.write('This is union ranking score using')
             if reg1 == 'Up-regulation':
-                st.write('Total genes with LFC >',FC1,'are',len(score1))
+                st.write('Total genes with LFC >',FC1,'are',len(out))
             elif reg1 == 'Down-regulation':
-                st.write('Total genes with LFC <',FC1,'are',len(score1))
-        st.write(score1)
+                st.write('Total genes with LFC <',FC1,'are',len(out))
+        st.write(out)
     
         @st.cache_data
         def convert_df(df):
             return df.to_csv().encode('utf-8')
 
-        st.download_button(label="Download data as CSV", data=convert_df(score1),file_name='GeneCompete_ranking.csv',mime='text/csv',)
+        st.download_button(label="Download data as CSV", data=convert_df(out),file_name='GeneCompete_ranking.csv',mime='text/csv',)
 
         if st.button("Clear output"):
             # Clear values from *all* all in-memory and on-disk data caches:
