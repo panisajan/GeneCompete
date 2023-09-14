@@ -10,7 +10,7 @@ https://genecompete.streamlit.app/ 👈
 
 ## Python functions
 
-We proposed two python function.
+We proposed two python function. The output of these functions are pandas dataframe with rating and ranking scores of each gene.
 - GeneCompete_Union [^1]
 - GeneCompete_Intersect [^2]
 
