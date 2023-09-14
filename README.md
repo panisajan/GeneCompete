@@ -1,10 +1,14 @@
 # GeneCompete
 
-GeneCompete is a tool to combine heterogeneous gene expression datasets to order gene importance.
+GeneCompete is a tool to combine heterogeneous gene expression datasets to order gene importance. Notice that, we suggest using Python function for large datasets.
 
 ## Web-Application
 
 https://genecompete.streamlit.app/
+
+## Python function
+
+
 
 ## Further Reading
 
