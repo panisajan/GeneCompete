@@ -18,7 +18,7 @@ dat3 = pd.read_csv("sample_data/dat3.csv", index_col=0)
 dat4 = pd.read_csv("sample_data/dat4.csv", index_col=0)
 dat1.head()
 ```
-![alt text](figure/Fig1.png)
+![alt text](figure/Fig1.png width="48")
 
 Example 1:
 ```
