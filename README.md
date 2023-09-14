@@ -1,4 +1,4 @@
-### 🧬 Integration of multiple gene expression with GeneCompete 🏆
+# 🧬 Integration of multiple gene expression with GeneCompete 🏆
 
 GeneCompete is a tool to combine heterogeneous gene expression datasets to order gene importance. Notice that, we suggest using Python function for large datasets.
 
@@ -7,6 +7,17 @@ GeneCompete is a tool to combine heterogeneous gene expression datasets to order
 https://genecompete.streamlit.app/
 
 ## Python function
+
+We proposed two python function namely, GeneCompete_Union and GeneCompete_Intersect.
+
+Input | Description
+ ------------ | ------------- 
+table | **Gene expression data**: Multiple files where the first column is gene name. These data can be prepared by any tools.
+name | **Column name**: The interested value that will be used as competing score (in the example is logFC).
+method | **Ranking Method**: Select 'Win-loss', 'Massey', 'Colley', 'Keener', 'Elo', 'Markov', 'PageRank', or 'BiPagerank'
+reg | **Regulation cases**: 'Up-regulation' or 'Down-regulation'
+FC | **logFC threshold**: If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with logFC > (logFC threshold) in case of up-regulation and logFC < -(logFC threshold) for down-regulation.
+
 - Installation
 ```!git clone https://github.com/panisajan/GeneCompete```
 - Load data
@@ -20,15 +31,7 @@ dat1.head()
 ```
 <img src='figure/Fig1.png' width="600">
 
-Input | Description
- ------------ | ------------- 
-table | **Gene expression data**: Multiple files where the first column is gene name. These data can be prepared by any tools.
-name | **Column name**: The interested value that will be used as competing score (in the example is logFC).
-method | **Ranking Method**: Select 'Win-loss', 'Massey', 'Colley', 'Keener', 'Elo', 'Markov', 'PageRank', or 'BiPagerank'
-reg | **Regulation cases**: 'Up-regulation' or 'Down-regulation'
-FC | **logFC threshold**: If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with logFC > (logFC threshold) in case of up-regulation and logFC < -(logFC threshold) for down-regulation.
-
-#Example 1:
+## - Example 1:
 ```
 from GeneCompete_Union import*
 
@@ -40,7 +43,7 @@ score.head()
 ```
 <img src='figure/Fig2.png'>
 
-#Example 2:
+## - Example 2:
 ```
 from GeneCompete_Intersect import*
 
