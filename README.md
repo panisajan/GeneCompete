@@ -8,11 +8,11 @@ https://genecompete.streamlit.app/
 
 ## Python function
 
-function test() {
-  import pandas as pd
-  dat1 = pd.read_csv("sample_data/dat1.csv")
-  dat1.head()
-}
+```
+import pandas as pd
+dat1 = pd.read_csv("sample_data/dat1.csv")
+dat1.head()
+```
 
 ## Further Reading
 
