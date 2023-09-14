@@ -343,7 +343,7 @@ st.subheader("**⛹️‍♂️ Ranking scores:**")
 #         st.write(mm[0])
 
 
-method2 = st.selectbox("**Ranking Score**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank.","BiPageRank"])
+method2 = st.selectbox("**Ranking Score**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
 submit = st.button('Submit')
 if submit:
     if not list_table1:
@@ -393,7 +393,7 @@ if submit:
 
 
 
-method1 = st.multiselect("**Select multiple methods**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank.","BiPageRank"])
+method1 = st.multiselect("**Select multiple methods**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
 
 compare = st.button('Compare')
        
