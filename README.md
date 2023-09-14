@@ -10,7 +10,9 @@ https://genecompete.streamlit.app/ 👈
 
 ## Python functions
 
-We proposed two python function namely, 1️⃣ GeneCompete_Union [^1] and 2️⃣ GeneCompete_Intersect [^2].
+We proposed two python function.
+- GeneCompete_Union [^1]
+- GeneCompete_Intersect [^2]
 
 Input | Description
  ------------ | ------------- 
