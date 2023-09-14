@@ -268,7 +268,7 @@ strategy1 = st.sidebar.radio("**Strategy**", ["Union","Intersect"])
 
 
 if strategy1 == 'Union':
-    FC1 = st.sidebar.slider('**logFC threshold**', 0.0, 5.0, , value=1.0,step = 0.1)
+    FC1 = st.sidebar.slider('**logFC threshold**', 0.0, 5.0, value=1.0,step = 0.1)
     #FC1 = st.sidebar.number_input('**logFC threshold**')
 else:
     FC1 = None
