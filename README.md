@@ -31,7 +31,7 @@ dat1.head()
 ```
 <img src='figure/Fig1.png' width="600">
 
-## - Example 1:
+## Example 1 (Union strategy):
 ```
 from GeneCompete_Union import*
 
@@ -43,7 +43,7 @@ score.head()
 ```
 <img src='figure/Fig2.png'>
 
-## - Example 2:
+## - Example 2 (Intersect strategy):
 ```
 from GeneCompete_Intersect import*
 
