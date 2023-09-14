@@ -16,7 +16,7 @@ table | **Gene expression data**: Multiple files where the first column is gene 
 name | **Column name**: The interested value that will be used as competing score (in the example is logFC).
 method | **Ranking Method**: Select 'Win-loss', 'Massey', 'Colley', 'Keener', 'Elo', 'Markov', 'PageRank', or 'BiPagerank'
 reg | **Regulation cases**: 'Up-regulation' or 'Down-regulation'
-FC | **logFC threshold**: If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with logFC > (logFC threshold) in case of up-regulation and logFC < -(logFC threshold) for down-regulation.
+FC | **logFC threshold**: If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with *logFC > FC* in case of up-regulation and *logFC < -FC* for down-regulation.
 
 - Installation
 ```!git clone https://github.com/panisajan/GeneCompete```
