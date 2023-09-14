@@ -43,7 +43,7 @@ score.head()
 ```
 <img src='figure/Fig2.png'>
 
-## - Example 2 (Intersect strategy):
+## Example 2 (Intersect strategy):
 ```
 from GeneCompete_Intersect import*
 
