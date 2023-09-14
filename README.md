@@ -18,7 +18,7 @@ dat3 = pd.read_csv("sample_data/dat3.csv", index_col=0)
 dat4 = pd.read_csv("sample_data/dat4.csv", index_col=0)
 dat1.head()
 ```
-<img src='figure/Fig1.png' width="100">
+<img src='figure/Fig1.png' width="400">
 
 Example 1:
 ```
@@ -30,6 +30,7 @@ my_methods = ['Win-loss', 'Massey', 'BiPagerank']
 score = GeneCompete_Union(table = my_data, name = 'logFC', method = my_methods, reg = 'Down-regulation', FC = 1)
 score.head()
 ```
+<img src='figure/Fig2.png' width="400">
 
 Example 2:
 ```
@@ -41,6 +42,7 @@ my_methods = ['Win-loss', 'Keener', 'PageRank']
 score = GeneCompete_Intersect(table = my_data, name = 'logFC', method = my_methods, reg = 'Up-regulation', FC = None)
 score.head()
 ```
+<img src='figure/Fig3.png' width="400">
 
 ## Further Reading
 
