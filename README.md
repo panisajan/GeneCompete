@@ -8,9 +8,9 @@ https://genecompete.streamlit.app/ 👈
 > [!NOTE]
 > We suggest using Python function for large datasets.
 
-## Python function
+## Python functions
 
-We proposed two python function namely, GeneCompete_Union [^1] and GeneCompete_Intersect [^2].
+We proposed two python function namely, 1️⃣ GeneCompete_Union [^1] and 2️⃣ GeneCompete_Intersect [^2].
 
 Input | Description
  ------------ | ------------- 
