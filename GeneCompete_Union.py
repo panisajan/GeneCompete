@@ -184,7 +184,7 @@ def GeneCompete_Union(table,name,method,reg,FC):
         #df_markov = df_markov[['Name(Markov)','Score(Markov)','Rank(Markov)']]
         results.append(df_markov)
     
-    if 'PageRank.' in method:
+    if 'PageRank' in method:
         from scipy import sparse
         from fast_pagerank import pagerank
         from fast_pagerank import pagerank_power
@@ -197,7 +197,7 @@ def GeneCompete_Union(table,name,method,reg,FC):
         pgRank['Rank(PageRank)'] = range(1,len(pgRank)+1)
         results.append(pgRank)
     
-    if 'BiPageRank' in method:
+    if 'BiPagerank' in method:
         A = (np.array(w)).T
         sA = sparse.csr_matrix(A)
         pr_A = pagerank_power(sA, p=0.85)
