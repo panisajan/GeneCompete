@@ -8,7 +8,7 @@ https://genecompete.streamlit.app/
 
 ## Python function
 
-We proposed two python function namely, GeneCompete_Union and GeneCompete_Intersect.
+We proposed two python function namely, GeneCompete_Union [^1] and GeneCompete_Intersect [^2].
 
 Input | Description
  ------------ | ------------- 
@@ -57,6 +57,6 @@ score.head()
 
 ## Further Reading
 
-This is filler text, please replace this with a explanatory text about further relevant resources for this repo
-- Resource 1
+- [^1]
+- [^2]
 
