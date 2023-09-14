@@ -5,8 +5,8 @@ GeneCompete is a tool to combine heterogeneous gene expression datasets to order
 ## Web-Application
 
 https://genecompete.streamlit.app/
-> [!WARNING]
-> Notice that, we suggest using Python function for large datasets.
+> [!NOTE]
+> We suggest using Python function for large datasets.
 
 ## Python function
 
