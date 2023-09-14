@@ -195,7 +195,7 @@ def GeneCompete_Intersect(table,name,method,reg,FC = None):
         #df_markov = df_markov[['Name(Markov)','Score(Markov)','Rank(Markov)']]
         results.append(df_markov)
     
-    if 'PageRank.' in method:
+    if 'PageRank' in method:
         A = (np.array(w)).T
         sA = sparse.csr_matrix(A)
         pr_A = pagerank_power(sA, p=0.85)
@@ -208,7 +208,7 @@ def GeneCompete_Intersect(table,name,method,reg,FC = None):
         #pgRank = pgRank[['Name(PageRank)','Score(PageRank)','Rank(PageRank)']]
         results.append(pgRank)
     
-    if 'BiPageRank' in method:
+    if 'BiPagerank' in method:
         A = (np.array(w)).T
         sA = sparse.csr_matrix(A)
         pr_A = pagerank_power(sA, p=0.85)
