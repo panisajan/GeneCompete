@@ -57,6 +57,6 @@ score.head()
 
 ## Further Reading
 
-- [^1]
-- [^2]
+- [^1]: aa
+- [^2]: aa
 
