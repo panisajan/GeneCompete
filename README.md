@@ -21,7 +21,7 @@ dat1.head()
 <img src='figure/Fig1.png' width="600">
 
 - GeneCompete_Union
-(table = my_data, name = 'logFC', method = my_methods, reg = 'Down-regulation', FC = 1)
+
 Input | Description
  ------------ | ------------- 
 table | Gene expression data: Multiple files where the first column is gene name. These data can be prepared by any tools.
