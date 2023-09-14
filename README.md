@@ -22,13 +22,13 @@ dat1.head()
 
 Input | Description
  ------------ | ------------- 
-table | Gene expression data: Multiple files where the first column is gene name. These data can be prepared by any tools.
-name | Column name: The interested value that will be used as competing score (in the example is logFC).
-method | Ranking Method: Select 'Win-loss', 'Massey', 'Colley', 'Keener', 'Elo', 'Markov', 'PageRank', or 'BiPagerank'
-reg | Regulation cases: 'Up-regulation' or 'Down-regulation'
-FC | logFC threshold: If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with logFC > (logFC threshold) in case of up-regulation and logFC < -(logFC threshold) for down-regulation.
+table | **Gene expression data**: Multiple files where the first column is gene name. These data can be prepared by any tools.
+name | **Column name**: The interested value that will be used as competing score (in the example is logFC).
+method | **Ranking Method**: Select 'Win-loss', 'Massey', 'Colley', 'Keener', 'Elo', 'Markov', 'PageRank', or 'BiPagerank'
+reg | **Regulation cases**: 'Up-regulation' or 'Down-regulation'
+FC | **logFC threshold**: If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with logFC > (logFC threshold) in case of up-regulation and logFC < -(logFC threshold) for down-regulation.
 
-Example 1:
+#Example 1:
 ```
 from GeneCompete_Union import*
 
@@ -40,7 +40,7 @@ score.head()
 ```
 <img src='figure/Fig2.png'>
 
-Example 2:
+#Example 2:
 ```
 from GeneCompete_Intersect import*
 
