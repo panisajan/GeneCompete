@@ -401,7 +401,7 @@ st.subheader("**⛹️‍♂️ Ranking scores:**")
 
 method1 = st.multiselect("**Select ranking method(s)**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
 
-compare = st.button('Compare')
+compare = st.button('Submit')
        
 if compare:
     if not list_table1:
