@@ -238,6 +238,9 @@ csv_files = ["sample_data/dat1.csv","sample_data/dat2.csv","sample_data/dat3.csv
 #selected_files = st.multiselect("Select example input files to download", csv_files)
 zip_file = create_zip(csv_files)
 
+if st.sidebar.button("Apply sample data"):
+    table1 = csv_files
+
 if st.button('Preview example'):
     df_ex = pd.read_csv(csv_files[0] ,index_col=0)
     df_ex['adj.P.Val'] = df_ex['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
@@ -277,6 +280,9 @@ else:
 st.text(" \n")
 st.subheader("📁 Preparing Input:")
 st.write('**:red[Total number of file uploaded:]**',len(list_table1))
+
+
+
 if not list_table1:
     st.error('Error: Please upload files', icon="🚨")
 if not name1:
