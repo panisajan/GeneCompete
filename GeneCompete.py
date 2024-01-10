@@ -349,53 +349,53 @@ st.subheader("**⛹️‍♂️ Ranking scores:**")
 #         st.write(mm[0])
 
 
-method2 = st.selectbox("**Ranking Score**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
-submit = st.button('Submit')
-if submit:
-    if not list_table1:
-        st.error('Error: Please upload files', icon="🚨")
-    if not name1:
-        st.error('Error: Please specify column name', icon="🚨")
-    if not method2:
-        st.error('Error: Please select method(s)', icon="🚨")
-    if list_table1 and name1 and method2:
-        #st.text(" \n")
-        # begin = time.time()
-        # out = GeneCompete(table = list_table1,name = name1,strategy = strategy1,method = method1,reg = reg1,FC = FC1)
-        # end = time.time()
-        # #time.sleep(5)
-        # st.success('Success! Here is your ranking score.')
-        #st.write('Time:',end-begin)
-        #with st.spinner('Please wait ...'):
-        #begin = time.time()
-        #score = []
-        with st.spinner('Please wait ...'):
-            if strategy1 == 'Union':
-                out1 = GeneCompete_Union(table = list_table1,name = name1,method = method2,reg = reg1,FC = FC1)
-            elif strategy1 == 'Intersect':
-                out1 = GeneCompete_Intersect(table = list_table1,name = name1,method = method2,reg = reg1, FC=None)
-        #end = time.time()
-        #time.sleep(5)
-        #score.append(out)
-        #dfs = [df.set_index('Name') for df in score]
-        #score2 = pd.concat(dfs, axis=1)
-        st.success('Success! Here is your ranking score.', icon="✅")
-            #st.write('Time:',end-begin)
-        if strategy1 == 'Intersect':
-            st.write('This is', reg1,'intersection ranking score')
-        elif strategy1 == 'Union':
-            st.write('This is union ranking score using')
-            if reg1 == 'Up-regulation':
-                st.write('Total genes with LFC >',FC1,'are',len(out1))
-            elif reg1 == 'Down-regulation':
-                st.write('Total genes with LFC <',FC1,'are',len(out1))
-        st.write(out1)
+# method2 = st.selectbox("**Ranking Score**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
+# submit = st.button('Submit')
+# if submit:
+#     if not list_table1:
+#         st.error('Error: Please upload files', icon="🚨")
+#     if not name1:
+#         st.error('Error: Please specify column name', icon="🚨")
+#     if not method2:
+#         st.error('Error: Please select method(s)', icon="🚨")
+#     if list_table1 and name1 and method2:
+#         #st.text(" \n")
+#         # begin = time.time()
+#         # out = GeneCompete(table = list_table1,name = name1,strategy = strategy1,method = method1,reg = reg1,FC = FC1)
+#         # end = time.time()
+#         # #time.sleep(5)
+#         # st.success('Success! Here is your ranking score.')
+#         #st.write('Time:',end-begin)
+#         #with st.spinner('Please wait ...'):
+#         #begin = time.time()
+#         #score = []
+#         with st.spinner('Please wait ...'):
+#             if strategy1 == 'Union':
+#                 out1 = GeneCompete_Union(table = list_table1,name = name1,method = method2,reg = reg1,FC = FC1)
+#             elif strategy1 == 'Intersect':
+#                 out1 = GeneCompete_Intersect(table = list_table1,name = name1,method = method2,reg = reg1, FC=None)
+#         #end = time.time()
+#         #time.sleep(5)
+#         #score.append(out)
+#         #dfs = [df.set_index('Name') for df in score]
+#         #score2 = pd.concat(dfs, axis=1)
+#         st.success('Success! Here is your ranking score.', icon="✅")
+#             #st.write('Time:',end-begin)
+#         if strategy1 == 'Intersect':
+#             st.write('This is', reg1,'intersection ranking score')
+#         elif strategy1 == 'Union':
+#             st.write('This is union ranking score using')
+#             if reg1 == 'Up-regulation':
+#                 st.write('Total genes with LFC >',FC1,'are',len(out1))
+#             elif reg1 == 'Down-regulation':
+#                 st.write('Total genes with LFC <',FC1,'are',len(out1))
+#         st.write(out1)
     
-        @st.cache_data
-        def convert_df(df):
-            return df.to_csv().encode('utf-8')
+#         @st.cache_data
+#         def convert_df(df):
+#             return df.to_csv().encode('utf-8')
 
-        st.download_button(label="Download data as CSV", data=convert_df(out1),file_name='GeneCompete_ranking.csv',mime='text/csv',)
+#         st.download_button(label="Download data as CSV", data=convert_df(out1),file_name='GeneCompete_ranking.csv',mime='text/csv',)
 
 
 
