@@ -399,7 +399,7 @@ st.subheader("**⛹️‍♂️ Ranking scores:**")
 
 
 
-method1 = st.multiselect("**Select multiple methods**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
+method1 = st.multiselect("**Select ranking method(s)**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
 
 compare = st.button('Compare')
        
