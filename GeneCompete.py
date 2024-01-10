@@ -252,10 +252,10 @@ with open(zip_file, "rb") as f:
     bytes = f.read()
     st.download_button(label="Download as zip", data=bytes, file_name="sample.zip", mime="application/octet-stream")
 
-st.write('**2. Column name:** The interested value that will be used as competing score (in the example is logFC).')
+st.write('**2. Competition score (must be a column name):** The interested value that will be used as competing score (in the example is logFC).')
 st.write('**3. Regulation:** Select Up-regulation or Down-regulation.')
 st.write('**4. Strategy:** Select Intersect or Union.')
-st.write('**5. logFC threshold:** If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with _logFC > (logFC threshold)_ in case of up-regulation and _logFC < -(logFC threshold)_ for down-regulation.')
+st.write('**5. threshold:** If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with _Competition score > (threshold)_ in case of up-regulation and _Competition score < -(threshold)_ for down-regulation.')
 st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank., or Bi-PageRank')
 
 list_table1 = list()
@@ -264,14 +264,14 @@ for table_i in table1:
     #st.write(df.index)
     list_table1.append(df)
 
-name1 = st.sidebar.text_input("**Column name**","logFC")
+name1 = st.sidebar.text_input("**Competition score (must be a column name)**","logFC")
 reg1 = st.sidebar.radio("**Regulation**", ["Up-regulation","Down-regulation"])
 strategy1 = st.sidebar.radio("**Strategy**", ["Union","Intersect"])
 # FC1 = st.sidebar.slider('**logFC threshold**', 0.0, 5.0, step = 0.1)
 
 
 if strategy1 == 'Union':
-    FC1 = st.sidebar.slider('**logFC threshold**', 0.0, 5.0, value=1.0,step = 0.1)
+    FC1 = st.sidebar.slider('**threshold**', 0.0, 5.0, value=1.0,step = 0.1)
     #FC1 = st.sidebar.number_input('**logFC threshold**')
 else:
     FC1 = None
