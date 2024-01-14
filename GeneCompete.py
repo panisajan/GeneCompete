@@ -264,11 +264,11 @@ for table_i in table1:
     #st.write(df.index)
     list_table1.append(df)
 
+
 if st.sidebar.button("Apply example datasets"):
-    table1 = csv_files
     list_table1 = list()
-    for table_i in table1:
-        df = pd.read_csv(table_i ,index_col=0)
+    for table_i in csv_files:
+        df = pd.read_csv(csv_files[i] ,index_col=0)
         #st.write(df.index)
         list_table1.append(df)
 
@@ -286,10 +286,12 @@ else:
 
 if st.sidebar.button('Check your input data'):
     st.text(" \n")
-    st.write(list_table1)
     st.subheader("📁 Preparing Input:")
-    st.write('**:red[Total number of file uploaded:]**',len(list_table1))
+
+    for i in len(list_table1):
+        st.write(list_table1[i])
     
+    st.write('**:red[Total number of file uploaded:]**',len(list_table1))
     
     
     if not list_table1:
