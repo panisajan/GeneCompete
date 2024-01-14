@@ -270,7 +270,7 @@ if 'list_table1' not in st.session_state:
     #         with uploaded_file:
     #             df = pd.read_csv(uploaded_file, index_col=0)
     #             st.session_state.list_table1.append(df)
-uploaded_files = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
+uploaded_files = st.sidebar.file_uploader('**⬇️ Upload your file here ⬇️**', type='csv', accept_multiple_files=True)
 if uploaded_files is not None:
     for uploaded_file in uploaded_files:
         try:
