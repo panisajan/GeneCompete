@@ -263,10 +263,15 @@ for table_i in table1:
     #st.write(df.index)
     list_table1.append(df)
 
-
 if st.sidebar.button("Apply example datasets"):
+    table1 = list()
+    for i in csv_files:
+        df_i = pd.read_csv(csv_files[i] ,index_col=0)
+        df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
+        df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
+        table1.append(df_i)
     list_table1 = list()
-    for table_i in csv_files:
+    for table_i in table1:
         df = pd.read_csv(table_i ,index_col=0)
         #st.write(df.index)
         list_table1.append(df)
@@ -283,12 +288,12 @@ if strategy1 == 'Union':
 else:
     FC1 = None
 
+st.subheader("2️⃣ Preparing Input:")
 if st.sidebar.button('Check your input data'):
     st.text(" \n")
-    st.subheader("2️⃣ Preparing Input:")
 
     #for i in range(len(list_table1)):
-    st.write(list_table1)
+    #st.write(list_table1)
     
     st.write('**:red[Total number of file uploaded:]**',len(list_table1))
     
