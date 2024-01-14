@@ -263,10 +263,10 @@ for table_i in table1:
     #st.write(df.index)
     list_table1.append(df)
 
-if st.sidebar.button("Apply example datasets"):
+if st.sidebar.button("Apply sample data"):
     list_table1 = list()
     for i in csv_files:
-        df_i = pd.read_csv(csv_files,index_col=0)
+        df_i = pd.read_csv(csv_files[i],index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
         list_table1.append(df_i)
