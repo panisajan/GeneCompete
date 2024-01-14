@@ -245,10 +245,10 @@ if st.button('Data example'):
     df_ex['P.Value'] = df_ex['P.Value'].apply(lambda x: "{:.1e}".format(x))
     #st.dataframe(df_ex.round(2))
     st.write(df_ex)
-#st.download_button(label="Download as zip", data=zip_file, file_name="my_zip_file.zip", mime="application/zip")
-# with open(zip_file, "rb") as f:
-#     bytes = f.read()
-#     st.download_button(label="Download as zip", data=bytes, file_name="sample.zip", mime="application/octet-stream")
+st.download_button(label="Download as zip", data=zip_file, file_name="my_zip_file.zip", mime="application/zip")
+with open(zip_file, "rb") as f:
+    bytes = f.read()
+    st.download_button(label="Download example as zip", data=bytes, file_name="sample.zip", mime="application/octet-stream")
 
 st.write('**2. Competition score (must be a column name):** The interested value that will be used as competing score (in the example is logFC).')
 st.write('**3. Regulation:** Select Up-regulation or Down-regulation.')
@@ -316,7 +316,7 @@ else:
 st.subheader("2️⃣ Preparing Input:")
 #if st.sidebar.button('Check your input data'):
 st.text(" \n")
-if st.button("Show your data"):
+if st.button("Preview uploaded data"):
     st.write('Uploaded files:', st.session_state.list_table1)
 #for i in range(len(list_table1)):
 #st.write(list_table1)
