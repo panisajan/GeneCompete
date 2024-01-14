@@ -267,7 +267,7 @@ for table_i in table1:
 if st.sidebar.button("Apply example datasets"):
     list_table1 = list()
     for table_i in csv_files:
-        df = pd.read_csv(table_i[i] ,index_col=0)
+        df = pd.read_csv(table_i ,index_col=0)
         #st.write(df.index)
         list_table1.append(df)
 
