@@ -245,7 +245,7 @@ if st.button('Data example'):
     df_ex['P.Value'] = df_ex['P.Value'].apply(lambda x: "{:.1e}".format(x))
     #st.dataframe(df_ex.round(2))
     st.write(df_ex)
-st.download_button(label="Download as zip", data=zip_file, file_name="my_zip_file.zip", mime="application/zip")
+#st.download_button(label="Download as zip", data=zip_file, file_name="my_zip_file.zip", mime="application/zip")
 with open(zip_file, "rb") as f:
     bytes = f.read()
     st.download_button(label="Download example as zip", data=bytes, file_name="sample.zip", mime="application/octet-stream")
