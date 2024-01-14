@@ -222,7 +222,7 @@ st.write('**1. Gene expression data:** Multiple csv files where the first column
 st.sidebar.header('Input')
 
 table1 = st.sidebar.file_uploader('**Input file**', type='csv', accept_multiple_files=True)
-st.sidebar.write(table1)
+st.sidebar.write(len(table1))
 
 import zipfile
 import os
@@ -239,8 +239,7 @@ csv_files = ["sample_data/dat1.csv","sample_data/dat2.csv","sample_data/dat3.csv
 #selected_files = st.multiselect("Select example input files to download", csv_files)
 zip_file = create_zip(csv_files)
 
-if st.sidebar.button("Apply example datasets"):
-    table1 = csv_files
+
 
 if st.button('Data example'):
     df_ex = pd.read_csv(csv_files[0] ,index_col=0)
@@ -261,6 +260,12 @@ st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, M
 
 if st.sidebar.button("Apply example datasets"):
     table1 = csv_files
+    list_table1 = list()
+    for table_i in table1:
+        df = pd.read_csv(table_i ,index_col=0)
+        #st.write(df.index)
+        list_table1.append(df)
+        st.sidebar.write('aa')
 
 list_table1 = list()
 for table_i in table1:
