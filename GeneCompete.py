@@ -258,6 +258,9 @@ st.write('**4. Strategy:** Select Intersect or Union.')
 st.write('**5. threshold:** If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with _Competition score > (threshold)_ in case of up-regulation and _Competition score < -(threshold)_ for down-regulation.')
 st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank., or Bi-PageRank')
 
+if st.sidebar.button("Apply example datasets"):
+    table1 = csv_files
+
 list_table1 = list()
 for table_i in table1:
     df = pd.read_csv(table_i ,index_col=0)
