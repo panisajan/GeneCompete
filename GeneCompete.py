@@ -273,11 +273,18 @@ if st.sidebar.button("Apply sample data"):
 
 if st.sidebar.button("Upload files"):
     table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
-    for table_i in table1:
-        df = pd.read_csv(table_i ,index_col=0)
-        #st.write(df)
-        #st.write(df.index)
-        st.session_state.list_table1.append(df)
+    if table1 is not None:  # Check if files are uploaded
+        for table_i in table1:
+            df = pd.read_csv(table_i, index_col=0)
+            st.session_state.list_table1.append(df)
+
+# if st.sidebar.button("Upload files"):
+#     table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
+#     for table_i in table1:
+#         df = pd.read_csv(table_i ,index_col=0)
+#         #st.write(df)
+#         #st.write(df.index)
+#         st.session_state.list_table1.append(df)
 
 name1 = st.sidebar.text_input("**Competition score (must be a column name)**","logFC")
 reg1 = st.sidebar.radio("**Regulation**", ["Up-regulation","Down-regulation"])
