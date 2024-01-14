@@ -264,17 +264,12 @@ for table_i in table1:
     list_table1.append(df)
 
 if st.sidebar.button("Apply example datasets"):
-    table1 = list()
+    list_table1 = list()
     for i in csv_files:
-        df_i = pd.read_csv(csv_files[i] ,index_col=0)
+        df_i = pd.read_csv(csv_files,index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
-        table1.append(df_i)
-    list_table1 = list()
-    for table_i in table1:
-        df = pd.read_csv(table_i ,index_col=0)
-        #st.write(df.index)
-        list_table1.append(df)
+        list_table1.append(df_i)
 
 name1 = st.sidebar.text_input("**Competition score (must be a column name)**","logFC")
 reg1 = st.sidebar.radio("**Regulation**", ["Up-regulation","Down-regulation"])
