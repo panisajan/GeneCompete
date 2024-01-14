@@ -219,7 +219,7 @@ st.subheader('Quick start')
 st.write('GeneCompete requires the following input files.')
 st.write('**1. Gene expression data:** Multiple csv files where the first column is gene name. These data can be prepared by any tools.')
 
-st.sidebar.header('Input')
+st.sidebar.header('1️⃣ Input')
 
 table1 = st.sidebar.file_uploader('**Input file**', type='csv', accept_multiple_files=True)
 
@@ -285,7 +285,7 @@ else:
 
 if st.sidebar.button('Check your input data'):
     st.text(" \n")
-    st.subheader("📁 Preparing Input:")
+    st.subheader("2️⃣ Preparing Input:")
 
     #for i in range(len(list_table1)):
     st.write(list_table1)
@@ -343,7 +343,7 @@ if st.sidebar.button('Check your input data'):
         else:
             st.success('Press submit to obtain ranking score')
 
-st.subheader("**⛹️‍♂️ Ranking scores:**")
+st.subheader("**3️⃣ Ranking scores:** ⛹️‍♂️")
 
 # st.write('**Who are playing?**')
 # match = st.button('Click')
