@@ -222,6 +222,7 @@ st.write('**1. Gene expression data:** Multiple csv files where the first column
 st.sidebar.header('Input')
 
 table1 = st.sidebar.file_uploader('**Input file**', type='csv', accept_multiple_files=True)
+st.sidebar.write(table1)
 
 import zipfile
 import os
