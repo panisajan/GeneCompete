@@ -317,7 +317,7 @@ if st.session_state.list_table1 and name1:
     #     st.write('**:red[logFC threshold:]**',FC1)
     # else:
     #     FC1 = None
-    can_num = num_candidate(strategy1,list_table1,reg1,name1,FC1)
+    can_num = num_candidate(strategy1,st.session_state.list_table1,reg1,name1,FC1)
     #st.write('➡️ **Number of candidate genes:**',can_num)
 
     st.write('👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇')
@@ -446,9 +446,9 @@ if compare:
         #score = []
         with st.spinner('Please wait ...'):
             if strategy1 == 'Intersect':
-                out = GeneCompete_Intersect(table = list_table1,name = name1,method = method1,reg = reg1,FC=None)
+                out = GeneCompete_Intersect(table = st.session_state.list_table1,name = name1,method = method1,reg = reg1,FC=None)
             elif strategy1 == 'Union':
-                out = GeneCompete_Union(table = list_table1,name = name1,method = method1,reg = reg1,FC=FC1)
+                out = GeneCompete_Union(table = st.session_state.list_table1,name = name1,method = method1,reg = reg1,FC=FC1)
         # for met in method1:
         #     if strategy1 == 'Union':
         #         out = GeneCompete_Union(table = list_table1,name = name1,method = met,reg = reg1,FC = FC1)
