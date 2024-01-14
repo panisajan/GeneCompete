@@ -274,10 +274,10 @@ if st.sidebar.button("Apply sample data"):
 if st.sidebar.button("Upload files"):
     table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
     if table1 is not None:
-    for uploaded_file in table1:
-        with uploaded_file:
-            df = pd.read_csv(uploaded_file, index_col=0)
-            st.session_state.list_table1.append(df)
+        for uploaded_file in table1:
+            with uploaded_file:
+                df = pd.read_csv(uploaded_file, index_col=0)
+                st.session_state.list_table1.append(df)
 
     # if table1 is not None:  # Check if files are uploaded
     #     for table_i in table1:
