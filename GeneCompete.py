@@ -267,7 +267,7 @@ if st.sidebar.button("Apply sample data"):
         list_table1.append(df_i)
 
 elif st.sidebar.button("Upload files"):
-    table1 = st.sidebar.file_uploader('**Input file**', type='csv', accept_multiple_files=True)
+    table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
     for table_i in table1:
         df = pd.read_csv(table_i ,index_col=0)
         #st.write(df)
@@ -414,11 +414,23 @@ st.subheader("**3️⃣ Ranking scores:** ⛹️‍♂️")
 
 method1 = st.multiselect("**Select ranking method(s)**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
 
+if 'list_table1' not in st.session_state:
+    st.session_state.list_table1 = []
+
+# Your existing code for applying sample data and uploading files
+
 compare = st.button('Submit')
-       
+
 if compare:
-    if not list_table1:
+    if not st.session_state.list_table1:
         st.error('Error: Please upload files', icon="🚨")
+#     else:
+#         # Your code for processing the submitted data
+#         st.success('Submission successful!')
+       
+# if compare:
+#     if not list_table1:
+#         st.error('Error: Please upload files', icon="🚨")
     if not name1:
         st.error('Error: Please specify column name', icon="🚨")
     if not method1:
