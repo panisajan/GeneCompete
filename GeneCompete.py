@@ -259,7 +259,7 @@ st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, M
 st.sidebar.write('**Gene expression data**')
 # if 'list_table1' not in st.session_state:
 #     st.session_state.list_table1 = []
-list_table1 = list()
+list_table1 = []
 if st.sidebar.button("Apply sample data"):
     for i in range(len(csv_files)):
         df_i = pd.read_csv(csv_files[i],index_col=0)
