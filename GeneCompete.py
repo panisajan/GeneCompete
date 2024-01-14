@@ -222,7 +222,6 @@ st.write('**1. Gene expression data:** Multiple csv files where the first column
 st.sidebar.header('Input')
 
 table1 = st.sidebar.file_uploader('**Input file**', type='csv', accept_multiple_files=True)
-st.sidebar.write(len(table1))
 
 import zipfile
 import os
@@ -288,7 +287,7 @@ if st.sidebar.button('Check your input data'):
     st.text(" \n")
     st.subheader("📁 Preparing Input:")
 
-    for i in len(list_table1):
+    for i in range(len(list_table1)):
         st.write(list_table1[i])
     
     st.write('**:red[Total number of file uploaded:]**',len(list_table1))
