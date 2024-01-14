@@ -301,14 +301,14 @@ st.text(" \n")
 st.write('**:red[Total number of file uploaded:]**',len(st.session_state.list_table1))
 
 
-if not list_table1:
+if not st.session_state.list_table1:
     st.error('Error: Please upload files', icon="🚨")
 if not name1:
     st.error('Error: Please specify column name', icon="🚨")
-for i in range(len(list_table1)):
+for i in range(len(st.session_state.list_table1)):
     st.write('Total number of genes in dataset',i+1,'is',len(st.session_state.list_table1[i]))
 
-if list_table1 and name1:
+if st.session_state.list_table1 and name1:
     # df_sum = pd.DataFrame({'Strategy':strategy1,'Regulation':reg1,'logFC threshold':FC1})
     # st.write(df_sum)
     # st.write('**:red[Strategy:]**',strategy1)
@@ -433,7 +433,7 @@ if compare:
         st.error('Error: Please specify column name', icon="🚨")
     if not method1:
         st.error('Error: Please select method(s)', icon="🚨")
-    if list_table1 and name1 and method1:
+    if st.session_state.list_table1 and name1 and method1:
         #st.text(" \n")
         # begin = time.time()
         # out = GeneCompete(table = list_table1,name = name1,strategy = strategy1,method = method1,reg = reg1,FC = FC1)
