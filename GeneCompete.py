@@ -257,8 +257,8 @@ st.write('**5. threshold:** If the union strategy is selected, the number of gen
 st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank., or Bi-PageRank')
 
 st.sidebar.write('**Gene expression data**')
-if 'list_table1' not in st.session_state:
-    st.session_state.list_table1 = []
+# if 'list_table1' not in st.session_state:
+#     st.session_state.list_table1 = []
 list_table1 = list()
 if st.sidebar.button("Apply sample data"):
     for i in range(len(csv_files)):
@@ -421,61 +421,61 @@ if 'list_table1' not in st.session_state:
 
 # Your existing code for applying sample data and uploading files
 
-compare = st.button('Submit')
+#compare = st.button('Submit')
        
-if compare:
-    if not st.session_state.list_table1:
-        st.error('Error: Please upload files', icon="🚨")
-    if not name1:
-        st.error('Error: Please specify column name', icon="🚨")
-    if not method1:
-        st.error('Error: Please select method(s)', icon="🚨")
-    if list_table1 and name1 and method1:
-        #st.text(" \n")
-        # begin = time.time()
-        # out = GeneCompete(table = list_table1,name = name1,strategy = strategy1,method = method1,reg = reg1,FC = FC1)
-        # end = time.time()
-        # #time.sleep(5)
-        # st.success('Success! Here is your ranking score.')
-        #st.write('Time:',end-begin)
-        #with st.spinner('Please wait ...'):
-            #begin = time.time()
-        #score = []
-        with st.spinner('Please wait ...'):
-            if strategy1 == 'Intersect':
-                out = GeneCompete_Intersect(table = list_table1,name = name1,method = method1,reg = reg1,FC=None)
-            elif strategy1 == 'Union':
-                out = GeneCompete_Union(table = list_table1,name = name1,method = method1,reg = reg1,FC=FC1)
-        # for met in method1:
-        #     if strategy1 == 'Union':
-        #         out = GeneCompete_Union(table = list_table1,name = name1,method = met,reg = reg1,FC = FC1)
-        #     elif strategy1 == 'Intersect':
-        #         out = GeneCompete_Intersect(table = list_table1,name = name1,method = met,reg = reg1)
-        #         #st.write(out)    
-        #     score.append(out)
-        # dfs = [df.set_index('Name') for df in score]
-        # score1 = pd.concat(dfs, axis=1)
-
-
-        st.success('Success! Here is your ranking score.')
-            #st.write('Time:',end-begin)
+#if compare:
+if not list_table1:
+    st.error('Error: Please upload files', icon="🚨")
+if not name1:
+    st.error('Error: Please specify column name', icon="🚨")
+if not method1:
+    st.error('Error: Please select method(s)', icon="🚨")
+if list_table1 and name1 and method1:
+    #st.text(" \n")
+    # begin = time.time()
+    # out = GeneCompete(table = list_table1,name = name1,strategy = strategy1,method = method1,reg = reg1,FC = FC1)
+    # end = time.time()
+    # #time.sleep(5)
+    # st.success('Success! Here is your ranking score.')
+    #st.write('Time:',end-begin)
+    #with st.spinner('Please wait ...'):
+        #begin = time.time()
+    #score = []
+    with st.spinner('Please wait ...'):
         if strategy1 == 'Intersect':
-            st.write('This is', reg1,'intersection ranking score')
+            out = GeneCompete_Intersect(table = list_table1,name = name1,method = method1,reg = reg1,FC=None)
         elif strategy1 == 'Union':
-            st.write('This is union ranking score using')
-            if reg1 == 'Up-regulation':
-                st.write('Total genes with LFC >',FC1,'are',len(out))
-            elif reg1 == 'Down-regulation':
-                st.write('Total genes with LFC <',FC1,'are',len(out))
-        st.write(out)
-    
-        @st.cache_data
-        def convert_df(df):
-            return df.to_csv().encode('utf-8')
+            out = GeneCompete_Union(table = list_table1,name = name1,method = method1,reg = reg1,FC=FC1)
+    # for met in method1:
+    #     if strategy1 == 'Union':
+    #         out = GeneCompete_Union(table = list_table1,name = name1,method = met,reg = reg1,FC = FC1)
+    #     elif strategy1 == 'Intersect':
+    #         out = GeneCompete_Intersect(table = list_table1,name = name1,method = met,reg = reg1)
+    #         #st.write(out)    
+    #     score.append(out)
+    # dfs = [df.set_index('Name') for df in score]
+    # score1 = pd.concat(dfs, axis=1)
 
-        st.download_button(label="Download data as CSV", data=convert_df(out),file_name='GeneCompete_ranking.csv',mime='text/csv',)
 
-        if st.button("Clear output"):
-            # Clear values from *all* all in-memory and on-disk data caches:
-            # i.e. clear values from both square and cube
-            st.cache_data.clear()
+    st.success('Success! Here is your ranking score.')
+        #st.write('Time:',end-begin)
+    if strategy1 == 'Intersect':
+        st.write('This is', reg1,'intersection ranking score')
+    elif strategy1 == 'Union':
+        st.write('This is union ranking score using')
+        if reg1 == 'Up-regulation':
+            st.write('Total genes with LFC >',FC1,'are',len(out))
+        elif reg1 == 'Down-regulation':
+            st.write('Total genes with LFC <',FC1,'are',len(out))
+    st.write(out)
+
+    @st.cache_data
+    def convert_df(df):
+        return df.to_csv().encode('utf-8')
+
+    st.download_button(label="Download data as CSV", data=convert_df(out),file_name='GeneCompete_ranking.csv',mime='text/csv',)
+
+    if st.button("Clear output"):
+        # Clear values from *all* all in-memory and on-disk data caches:
+        # i.e. clear values from both square and cube
+        st.cache_data.clear()
