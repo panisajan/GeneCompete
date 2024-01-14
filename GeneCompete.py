@@ -279,7 +279,6 @@ if st.sidebar.button("Apply sample data"):
         #st.write(df_i)
         st.session_state.list_table1.append(df_i)
 
-st.write('Uploaded files:', st.session_state.list_table1)
     # if table1 is not None:  # Check if files are uploaded
     #     for table_i in table1:
     #         df = pd.read_csv(table_i, index_col=0)
@@ -308,10 +307,11 @@ else:
 st.subheader("2️⃣ Preparing Input:")
 #if st.sidebar.button('Check your input data'):
 st.text(" \n")
-
+if st.button("Show your data"):
+    st.write('Uploaded files:', st.session_state.list_table1)
 #for i in range(len(list_table1)):
 #st.write(list_table1)
-
+st.text(" \n")
 st.write('**:red[Total number of file uploaded:]**',len(st.session_state.list_table1))
 
 
