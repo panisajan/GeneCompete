@@ -238,19 +238,19 @@ csv_files = ["sample_data/dat1.csv","sample_data/dat2.csv","sample_data/dat3.csv
 #selected_files = st.multiselect("Select example input files to download", csv_files)
 zip_file = create_zip(csv_files)
 
-if st.sidebar.button("Apply sample data"):
+if st.sidebar.button("Apply example datasets"):
     table1 = csv_files
 
-if st.button('Preview example'):
+if st.button('Data example'):
     df_ex = pd.read_csv(csv_files[0] ,index_col=0)
     df_ex['adj.P.Val'] = df_ex['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
     df_ex['P.Value'] = df_ex['P.Value'].apply(lambda x: "{:.1e}".format(x))
     #st.dataframe(df_ex.round(2))
     st.write(df_ex)
 #st.download_button(label="Download as zip", data=zip_file, file_name="my_zip_file.zip", mime="application/zip")
-with open(zip_file, "rb") as f:
-    bytes = f.read()
-    st.download_button(label="Download as zip", data=bytes, file_name="sample.zip", mime="application/octet-stream")
+# with open(zip_file, "rb") as f:
+#     bytes = f.read()
+#     st.download_button(label="Download as zip", data=bytes, file_name="sample.zip", mime="application/octet-stream")
 
 st.write('**2. Competition score (must be a column name):** The interested value that will be used as competing score (in the example is logFC).')
 st.write('**3. Regulation:** Select Up-regulation or Down-regulation.')
