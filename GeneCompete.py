@@ -257,6 +257,8 @@ st.write('**5. threshold:** If the union strategy is selected, the number of gen
 st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank., or Bi-PageRank')
 
 st.sidebar.write('**Gene expression data**')
+if 'list_table1' not in st.session_state:
+    st.session_state.list_table1 = []
 list_table1 = list()
 if st.sidebar.button("Apply sample data"):
     for i in range(len(csv_files)):
@@ -420,17 +422,10 @@ if 'list_table1' not in st.session_state:
 # Your existing code for applying sample data and uploading files
 
 compare = st.button('Submit')
-
+       
 if compare:
     if not st.session_state.list_table1:
         st.error('Error: Please upload files', icon="🚨")
-#     else:
-#         # Your code for processing the submitted data
-#         st.success('Submission successful!')
-       
-# if compare:
-#     if not list_table1:
-#         st.error('Error: Please upload files', icon="🚨")
     if not name1:
         st.error('Error: Please specify column name', icon="🚨")
     if not method1:
