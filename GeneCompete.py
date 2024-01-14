@@ -259,7 +259,7 @@ st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, M
 st.sidebar.write('**Gene expression data**')
 # if 'list_table1' not in st.session_state:
 #     st.session_state.list_table1 = []
-list_table1 = []
+#list_table1 = []
 if 'list_table1' not in st.session_state:
     st.session_state.list_table1 = []
     
@@ -269,7 +269,7 @@ if st.sidebar.button("Apply sample data"):
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
         #st.write(df_i)
-        list_table1.append(df_i)
+        st.session_state.list_table1.append(df_i)
 
 elif st.sidebar.button("Upload files"):
     table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
@@ -277,7 +277,7 @@ elif st.sidebar.button("Upload files"):
         df = pd.read_csv(table_i ,index_col=0)
         #st.write(df)
         #st.write(df.index)
-        list_table1.append(df)
+        st.session_state.list_table1.append(df)
 
 name1 = st.sidebar.text_input("**Competition score (must be a column name)**","logFC")
 reg1 = st.sidebar.radio("**Regulation**", ["Up-regulation","Down-regulation"])
@@ -425,10 +425,10 @@ method1 = st.multiselect("**Select ranking method(s)**", ["Win-loss", "Massey", 
 # compare = st.button('Submit')
        
 # if compare:
-# if not st.session_state.list_table1:
-#     st.error('Error: Please upload files', icon="🚨")
-if not list_table1:
+if not st.session_state.list_table1:
     st.error('Error: Please upload files', icon="🚨")
+# if not list_table1:
+#     st.error('Error: Please upload files', icon="🚨")
 if not name1:
     st.error('Error: Please specify column name', icon="🚨")
 if not method1:
