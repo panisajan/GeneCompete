@@ -263,12 +263,14 @@ if st.sidebar.button("Apply sample data"):
         df_i = pd.read_csv(csv_files[i],index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
+        st.write(df_i)
         list_table1.append(df_i)
 
 elif st.sidebar.button("Upload files"):
     table1 = st.sidebar.file_uploader('**Input file**', type='csv', accept_multiple_files=True)
     for table_i in table1:
         df = pd.read_csv(table_i ,index_col=0)
+        st.write(df)
         #st.write(df.index)
         list_table1.append(df)
 
