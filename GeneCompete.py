@@ -478,7 +478,7 @@ if compare:
     
         st.download_button(label="Download data as CSV", data=convert_df(out),file_name='GeneCompete_ranking.csv',mime='text/csv',)
     
-        if st.button("Clear output"):
-            # Clear values from *all* all in-memory and on-disk data caches:
-            # i.e. clear values from both square and cube
-        st.cache_data.clear()
+        # if st.button("Clear output"):
+        #     # Clear values from *all* all in-memory and on-disk data caches:
+        #     # i.e. clear values from both square and cube
+        # st.cache_data.clear()
