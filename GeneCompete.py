@@ -271,7 +271,7 @@ if st.sidebar.button("Apply sample data"):
         #st.write(df_i)
         st.session_state.list_table1.append(df_i)
 
-elif st.sidebar.button("Upload files"):
+if st.sidebar.button("Upload files"):
     table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
     for table_i in table1:
         df = pd.read_csv(table_i ,index_col=0)
