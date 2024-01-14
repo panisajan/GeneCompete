@@ -287,8 +287,8 @@ if st.sidebar.button('Check your input data'):
     st.text(" \n")
     st.subheader("📁 Preparing Input:")
 
-    for i in range(len(list_table1)):
-        st.write(list_table1[i])
+    #for i in range(len(list_table1)):
+    st.write(list_table1)
     
     st.write('**:red[Total number of file uploaded:]**',len(list_table1))
     
