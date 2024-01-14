@@ -262,14 +262,6 @@ st.sidebar.write('**Gene expression data**')
 # list_table1 = []
 if 'list_table1' not in st.session_state:
     st.session_state.list_table1 = []
-    
-if st.sidebar.button("Apply sample data"):
-    for i in range(len(csv_files)):
-        df_i = pd.read_csv(csv_files[i],index_col=0)
-        df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
-        df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
-        #st.write(df_i)
-        st.session_state.list_table1.append(df_i)
 
 if st.sidebar.button("Upload files"):
     table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
@@ -278,6 +270,15 @@ if st.sidebar.button("Upload files"):
             with uploaded_file:
                 df = pd.read_csv(uploaded_file, index_col=0)
                 st.session_state.list_table1.append(df)
+
+if st.sidebar.button("Apply sample data"):
+    for i in range(len(csv_files)):
+        df_i = pd.read_csv(csv_files[i],index_col=0)
+        df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
+        df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
+        #st.write(df_i)
+        st.session_state.list_table1.append(df_i)
+
 st.write('Uploaded files:', st.session_state.list_table1)
     # if table1 is not None:  # Check if files are uploaded
     #     for table_i in table1:
