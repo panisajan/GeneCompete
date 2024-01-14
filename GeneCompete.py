@@ -278,7 +278,7 @@ if st.sidebar.button("Upload files"):
             with uploaded_file:
                 df = pd.read_csv(uploaded_file, index_col=0)
                 st.session_state.list_table1.append(df)
-
+st.write('Uploaded files:', st.session_state.list_table1)
     # if table1 is not None:  # Check if files are uploaded
     #     for table_i in table1:
     #         df = pd.read_csv(table_i, index_col=0)
