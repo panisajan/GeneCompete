@@ -260,6 +260,9 @@ st.sidebar.write('**Gene expression data**')
 # if 'list_table1' not in st.session_state:
 #     st.session_state.list_table1 = []
 list_table1 = []
+if 'list_table1' not in st.session_state:
+    st.session_state.list_table1 = []
+    
 if st.sidebar.button("Apply sample data"):
     for i in range(len(csv_files)):
         df_i = pd.read_csv(csv_files[i],index_col=0)
@@ -416,16 +419,16 @@ st.subheader("**3️⃣ Ranking scores:** ⛹️‍♂️")
 
 method1 = st.multiselect("**Select ranking method(s)**", ["Win-loss", "Massey", "Colley","Keener","Elo","Markov","PageRank","BiPagerank"])
 
-if 'list_table1' not in st.session_state:
-    st.session_state.list_table1 = []
 
 # Your existing code for applying sample data and uploading files
 
 compare = st.button('Submit')
        
 if compare:
-    if not list_table1:
+    if not st.session_state.list_table1:
         st.error('Error: Please upload files', icon="🚨")
+    # if not list_table1:
+    #     st.error('Error: Please upload files', icon="🚨")
     if not name1:
         st.error('Error: Please specify column name', icon="🚨")
     if not method1:
