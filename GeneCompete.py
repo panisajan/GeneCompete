@@ -265,7 +265,7 @@ st.sidebar.write('**Gene expression data**')
     
 if st.sidebar.button("Apply sample data"):
     if 'list_table1' not in st.session_state:
-    st.session_state.list_table1 = []
+        st.session_state.list_table1 = []
     for i in range(len(csv_files)):
         df_i = pd.read_csv(csv_files[i],index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
@@ -277,7 +277,7 @@ if st.sidebar.button("Apply sample data"):
 
 if st.sidebar.button("Upload files"):
     if 'list_table1' not in st.session_state:
-    st.session_state.list_table1 = []
+        st.session_state.list_table1 = []
     table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
     if table1 is not None:  # Check if files are uploaded
         for table_i in table1:
