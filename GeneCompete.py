@@ -258,6 +258,12 @@ st.write('**4. Strategy:** Select Intersect or Union.')
 st.write('**5. threshold:** If the union strategy is selected, the number of genes can be large and consume computational time. Before ranking, datasets are filtered with _Competition score > (threshold)_ in case of up-regulation and _Competition score < -(threshold)_ for down-regulation.')
 st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank., or Bi-PageRank')
 
+list_table1 = list()
+for table_i in table1:
+    df = pd.read_csv(table_i ,index_col=0)
+    #st.write(df.index)
+    list_table1.append(df)
+
 if st.sidebar.button("Apply example datasets"):
     table1 = csv_files
     list_table1 = list()
@@ -265,13 +271,6 @@ if st.sidebar.button("Apply example datasets"):
         df = pd.read_csv(table_i ,index_col=0)
         #st.write(df.index)
         list_table1.append(df)
-        st.sidebar.write('aa')
-
-list_table1 = list()
-for table_i in table1:
-    df = pd.read_csv(table_i ,index_col=0)
-    #st.write(df.index)
-    list_table1.append(df)
 
 name1 = st.sidebar.text_input("**Competition score (must be a column name)**","logFC")
 reg1 = st.sidebar.radio("**Regulation**", ["Up-regulation","Down-regulation"])
@@ -287,6 +286,7 @@ else:
 
 if st.sidebar.button('Check your input data'):
     st.text(" \n")
+    st.write(list_table1)
     st.subheader("📁 Preparing Input:")
     st.write('**:red[Total number of file uploaded:]**',len(list_table1))
     
