@@ -259,7 +259,7 @@ st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, M
 st.sidebar.write('**Gene expression data**')
 # if 'list_table1' not in st.session_state:
 #     st.session_state.list_table1 = []
-#list_table1 = []
+list_table1 = []
 if 'list_table1' not in st.session_state:
     st.session_state.list_table1 = []
     
@@ -278,7 +278,7 @@ elif st.sidebar.button("Upload files"):
         #st.write(df)
         #st.write(df.index)
         st.session_state.list_table1.append(df)
-
+st.write(st.session_state.list_table1)
 name1 = st.sidebar.text_input("**Competition score (must be a column name)**","logFC")
 reg1 = st.sidebar.radio("**Regulation**", ["Up-regulation","Down-regulation"])
 strategy1 = st.sidebar.radio("**Strategy**", ["Union","Intersect"])
