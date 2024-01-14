@@ -263,14 +263,14 @@ if st.sidebar.button("Apply sample data"):
         df_i = pd.read_csv(csv_files[i],index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
-        st.write(df_i)
+        #st.write(df_i)
         list_table1.append(df_i)
 
 elif st.sidebar.button("Upload files"):
     table1 = st.sidebar.file_uploader('**Input file**', type='csv', accept_multiple_files=True)
     for table_i in table1:
         df = pd.read_csv(table_i ,index_col=0)
-        st.write(df)
+        #st.write(df)
         #st.write(df.index)
         list_table1.append(df)
 
@@ -287,64 +287,64 @@ else:
     FC1 = None
 
 st.subheader("2️⃣ Preparing Input:")
-if st.sidebar.button('Check your input data'):
-    st.text(" \n")
+#if st.sidebar.button('Check your input data'):
+st.text(" \n")
 
-    #for i in range(len(list_table1)):
-    #st.write(list_table1)
-    
-    st.write('**:red[Total number of file uploaded:]**',len(list_table1))
-    
-    
-    if not list_table1:
-        st.error('Error: Please upload files', icon="🚨")
-    if not name1:
-        st.error('Error: Please specify column name', icon="🚨")
-    for i in range(len(list_table1)):
-        st.write('Total number of genes in dataset',i+1,'is',len(list_table1[i]))
-    
-    if list_table1 and name1:
-        # df_sum = pd.DataFrame({'Strategy':strategy1,'Regulation':reg1,'logFC threshold':FC1})
-        # st.write(df_sum)
-        # st.write('**:red[Strategy:]**',strategy1)
-        # st.write('**:red[Regulation:]**',reg1)
-        # if strategy1 == 'Union':
-        #     st.write('**:red[logFC threshold:]**',FC1)
-        # else:
-        #     FC1 = None
-        can_num = num_candidate(strategy1,list_table1,reg1,name1,FC1)
-        #st.write('➡️ **Number of candidate genes:**',can_num)
-    
-        st.write('👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇')
-        #st.write('🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹')
-    ## check
-        # col1, col2, col3, col4 = st.columns(4)
-        # col1.metric("**:red[Number of genes:]**",can_num)
-        # col2.metric("**:red[Strategy:]**",strategy1)
-        # col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
-        # col4.metric("**:red[logFC threshold:]**",FC1)
-        if strategy1 == 'Union':
-            col1, col2, col3, col4 = st.columns(4)
-            col1.metric("**:red[Number of genes:]**",can_num)
-            col2.metric("**:red[Strategy:]**",strategy1)
-            col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
-            col4.metric("**:red[logFC threshold:]**",FC1 if reg1=='Up-regulation' else -FC1)
-    
-        else:
-            #FC1 = None
-            col1, col2, col3 = st.columns(3)
-            col1.metric("**:red[Number of genes:]**",can_num)
-            col2.metric("**:red[Strategy:]**",strategy1)
-            col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
-            #col4.metric("**:red[logFC threshold:]**",FC1)
-    
-        st.write('👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆')
-        #st.write('🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹')
-    
-        if can_num>10000:
-            st.warning('Warning: Modify the input to reduce computational time', icon="⚠️")
-        else:
-            st.success('Press submit to obtain ranking score')
+#for i in range(len(list_table1)):
+#st.write(list_table1)
+
+st.write('**:red[Total number of file uploaded:]**',len(list_table1))
+
+
+if not list_table1:
+    st.error('Error: Please upload files', icon="🚨")
+if not name1:
+    st.error('Error: Please specify column name', icon="🚨")
+for i in range(len(list_table1)):
+    st.write('Total number of genes in dataset',i+1,'is',len(list_table1[i]))
+
+if list_table1 and name1:
+    # df_sum = pd.DataFrame({'Strategy':strategy1,'Regulation':reg1,'logFC threshold':FC1})
+    # st.write(df_sum)
+    # st.write('**:red[Strategy:]**',strategy1)
+    # st.write('**:red[Regulation:]**',reg1)
+    # if strategy1 == 'Union':
+    #     st.write('**:red[logFC threshold:]**',FC1)
+    # else:
+    #     FC1 = None
+    can_num = num_candidate(strategy1,list_table1,reg1,name1,FC1)
+    #st.write('➡️ **Number of candidate genes:**',can_num)
+
+    st.write('👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇')
+    #st.write('🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹')
+## check
+    # col1, col2, col3, col4 = st.columns(4)
+    # col1.metric("**:red[Number of genes:]**",can_num)
+    # col2.metric("**:red[Strategy:]**",strategy1)
+    # col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
+    # col4.metric("**:red[logFC threshold:]**",FC1)
+    if strategy1 == 'Union':
+        col1, col2, col3, col4 = st.columns(4)
+        col1.metric("**:red[Number of genes:]**",can_num)
+        col2.metric("**:red[Strategy:]**",strategy1)
+        col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
+        col4.metric("**:red[logFC threshold:]**",FC1 if reg1=='Up-regulation' else -FC1)
+
+    else:
+        #FC1 = None
+        col1, col2, col3 = st.columns(3)
+        col1.metric("**:red[Number of genes:]**",can_num)
+        col2.metric("**:red[Strategy:]**",strategy1)
+        col3.metric("**:red[Regulation:]**", 'UP' if reg1=='Up-regulation' else 'DOWN')
+        #col4.metric("**:red[logFC threshold:]**",FC1)
+
+    st.write('👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆')
+    #st.write('🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹🔷🔹')
+
+    if can_num>10000:
+        st.warning('Warning: Modify the input to reduce computational time', icon="⚠️")
+    else:
+        st.success('Press submit to obtain ranking score')
 
 st.subheader("**3️⃣ Ranking scores:** ⛹️‍♂️")
 
