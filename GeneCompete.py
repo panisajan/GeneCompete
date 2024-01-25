@@ -264,7 +264,6 @@ st.sidebar.write('**Gene expression data**')
 
 
 
-
 if 'list_table1' not in st.session_state:
     st.session_state.list_table1 = []
 
@@ -279,11 +278,15 @@ if uploaded_files is not None:
             st.error(f"Error processing file: {e}")
 
 if st.sidebar.button("Apply sample data"):
+    new_list_table = []  # Create a new list to store the updated data
     for i in range(len(csv_files)):
         df_i = pd.read_csv(csv_files[i], index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
-        st.session_state.list_table1.append(df_i)
+        new_list_table.append(df_i)
+
+    # Replace the old list with the new one
+    st.session_state.list_table1 = new_list_table
 
 # Display files and allow removal
 for i, file in enumerate(st.session_state.list_table1.copy()):  # Make a copy to iterate over
