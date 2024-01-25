@@ -262,6 +262,7 @@ st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, M
 
 st.sidebar.write('**Gene expression data**')
 
+uploaded_files = st.sidebar.file_uploader('**⬇️ Upload your file here ⬇️**', type='csv', accept_multiple_files=True)
 if uploaded_files is not None:
     st.session_state.list_table1 = []
     # Make a copy of the current list before making any changes
