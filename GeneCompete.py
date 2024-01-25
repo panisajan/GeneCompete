@@ -225,7 +225,7 @@ def embed_pdf(pdf_path):
 def main():
     #st.title("Streamlit PDF Viewer")
     
-    pdf_path = "GeneCompete tutorial.pdf"
+    pdf_path = "GeneCompete_tutorial.pdf"
     
     if st.button("GeneCompete tutorial"):
         embed_pdf(pdf_path)
