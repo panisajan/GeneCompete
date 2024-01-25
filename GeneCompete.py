@@ -215,12 +215,12 @@ st.write('GeneCompete is a tool to combine heterogeneous gene expression dataset
 
 # st.image(image, caption='Steps of GeneCompete')
 
-st.subheader('Quick start')
+#st.subheader('Quick start')
 
 
 github_url = 'https://github.com/panisajan/GeneCompete/blob/master/GeneCompete_tutorial.pdf'
 
-st.write(f"**:rainbow[Guide to Applying GeneCompete in 3 Simple Steps]**")
+st.subheader(f"**:rainbow[Guide to Applying GeneCompete in 3 Simple Steps]**")
 st.write(f"**📌 Click [here]({github_url}) to view tutorial.**")
 
 
