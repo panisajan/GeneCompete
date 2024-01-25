@@ -223,7 +223,7 @@ import webbrowser
 def main():
     # st.title("GitHub PDF Viewer")
 
-    github_url = 'https://github.com/panisajan/GeneCompete/GeneCompete_tutorial.pdf'
+    github_url = 'https://github.com/panisajan/GeneCompete/blob/master/GeneCompete_tutorial.pdf'
     
     if st.button("GeneCompete tutorial"):
         webbrowser.open_new_tab(github_url)
