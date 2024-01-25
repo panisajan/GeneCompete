@@ -219,14 +219,19 @@ st.subheader('Quick start')
 st.write('GeneCompete requires the following input files. The tutorial for GeneCompete,')
 
 def embed_pdf(pdf_path):
-    with open(pdf_path, "rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-        pdf_display = f'<embed src="data:application/pdf;base64,{base64_pdf}" width="700" height="1000" type="application/pdf">'
-        st.markdown(pdf_display, unsafe_allow_html=True)
+    pdf_display = f'<iframe src="{pdf_path}" width="700" height="1000"></iframe>'
+    st.markdown(pdf_display, unsafe_allow_html=True)
 
-# Example usage
-pdf_path = "GeneCompete tutorial.pdf"
-embed_pdf(pdf_path)
+def main():
+    st.title("Streamlit PDF Viewer")
+    
+    pdf_path = "https://github.com/panisajan/GeneCompete/blob/master/GeneCompete%20tutorial.pdf"
+    
+    if st.button("GeneCompete tutorial"):
+        embed_pdf(pdf_path)
+
+if __name__ == "__main__":
+    main()
 
 st.write('**1. Gene expression data:** Multiple csv files where the first column is gene name. These data can be prepared by any tools.')
 
