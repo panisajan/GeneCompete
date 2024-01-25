@@ -222,7 +222,7 @@ github_url = 'https://github.com/panisajan/GeneCompete/blob/master/GeneCompete_t
 
 import subprocess
 
-subprocess.call(['pip', 'install', 'annotated_text'])
+subprocess.call(['pip', 'install', 'st-annotated-text'])
 
 from annotated_text import annotated_text
 
