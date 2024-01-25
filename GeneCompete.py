@@ -216,14 +216,14 @@ st.write('GeneCompete is a tool to combine heterogeneous gene expression dataset
 # st.image(image, caption='Steps of GeneCompete')
 
 st.subheader('Quick start')
-st.write('GeneCompete requires the following input files. The tutorial for GeneCompete,')
+st.write('GeneCompete requires the following input files. The tutorial for GeneCompete:')
 
 import webbrowser
 
 def main():
     # st.title("GitHub PDF Viewer")
 
-    github_url = 'panisajan/GeneCompeteGeneCompete_tutorial.pdf'
+    github_url = 'panisajan/GeneCompete/GeneCompete_tutorial.pdf'
     
     if st.button("GeneCompete tutorial"):
         webbrowser.open_new_tab(github_url)
