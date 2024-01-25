@@ -5,4 +5,4 @@ scipy==1.11.2
 fast-pagerank==1.0.0
 rankit==0.3.2
 scikit-network==0.27.1
-st-annotated-text
+st-annotated-text==1.0
