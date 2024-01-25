@@ -263,35 +263,48 @@ st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, M
 st.sidebar.write('**Gene expression data**')
 
 
+import streamlit as st
+import pandas as pd
 
-if 'list_table1' not in st.session_state:
-    st.session_state.list_table1 = []
+if 'uploaded_files' not in st.session_state:
+    st.session_state.uploaded_files = []
+
+if 'applied_data' not in st.session_state:
+    st.session_state.applied_data = []
 
 uploaded_files = st.sidebar.file_uploader('**⬇️ Upload your file here ⬇️**', type='csv', accept_multiple_files=True)
 
 if uploaded_files is not None:
-    for uploaded_file in uploaded_files:
-        try:
-            df = pd.read_csv(uploaded_file, index_col=0)
-            st.session_state.list_table1.append(df)
-        except Exception as e:
-            st.error(f"Error processing file: {e}")
+    st.session_state.uploaded_files += uploaded_files
 
 if st.sidebar.button("Apply sample data"):
-    new_list_table = []  # Create a new list to store the updated data
+    new_data = []
     for i in range(len(csv_files)):
         df_i = pd.read_csv(csv_files[i], index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
-        new_list_table.append(df_i)
+        new_data.append(df_i)
 
-    # Replace the old list with the new one
-    st.session_state.list_table1 = new_list_table
+    st.session_state.applied_data = new_data
 
-# Display files and allow removal
-for i, file in enumerate(st.session_state.list_table1.copy()):  # Make a copy to iterate over
-    if st.checkbox(f"Remove File {i + 1}"):
-        st.session_state.list_table1.pop(i)
+# Display uploaded files
+for i, uploaded_file in enumerate(st.session_state.uploaded_files):
+    st.write(f"Uploaded File {i + 1}: {uploaded_file.name}")
+
+# Display applied data
+for i, df_i in enumerate(st.session_state.applied_data):
+    st.write(f"Applied Sample Data {i + 1}:", df_i)
+
+# Remove uploaded files
+remove_uploaded_file = st.sidebar.button("Remove Uploaded File")
+if remove_uploaded_file and st.session_state.uploaded_files:
+    st.session_state.uploaded_files.pop(0)  # Remove the first uploaded file
+
+# Remove applied sample data
+remove_applied_data = st.sidebar.button("Remove Applied Sample Data")
+if remove_applied_data and st.session_state.applied_data:
+    st.session_state.applied_data.pop(0)  # Remove the first applied data
+
 
 
 # ### now ##
