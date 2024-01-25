@@ -219,6 +219,11 @@ st.subheader('Quick start')
 st.write('GeneCompete requires the following input files. The tutorial for GeneCompete:')
 
 github_url = 'https://github.com/panisajan/GeneCompete/blob/master/GeneCompete_tutorial.pdf'
+
+import subprocess
+
+subprocess.call(['pip', 'install', 'annotated_text'])
+
 from annotated_text import annotated_text
 
 annotated_text("📌📌 Click [here]({github_url}) to view tutorial.")
