@@ -223,9 +223,9 @@ def embed_pdf(pdf_path):
     st.markdown(pdf_display, unsafe_allow_html=True)
 
 def main():
-    st.title("Streamlit PDF Viewer")
+    #st.title("Streamlit PDF Viewer")
     
-    pdf_path = "https://github.com/panisajan/GeneCompete/blob/master/GeneCompete%20tutorial.pdf"
+    pdf_path = "GeneCompete tutorial.pdf"
     
     if st.button("GeneCompete tutorial"):
         embed_pdf(pdf_path)
