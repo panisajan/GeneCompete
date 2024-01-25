@@ -218,17 +218,15 @@ st.write('GeneCompete is a tool to combine heterogeneous gene expression dataset
 st.subheader('Quick start')
 st.write('GeneCompete requires the following input files. The tutorial for GeneCompete,')
 
-def embed_pdf(pdf_path):
-    pdf_display = f'<iframe src="{pdf_path}" width="700" height="1000"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+import webbrowser
 
 def main():
-    #st.title("Streamlit PDF Viewer")
-    
-    pdf_path = "panisajan/GeneCompete/GeneCompete_tutorial.pdf"
+    # st.title("GitHub PDF Viewer")
+
+    github_url = 'panisajan/GeneCompeteGeneCompete_tutorial.pdf'
     
     if st.button("GeneCompete tutorial"):
-        embed_pdf(pdf_path)
+        webbrowser.open_new_tab(github_url)
 
 if __name__ == "__main__":
     main()
