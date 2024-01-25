@@ -261,36 +261,78 @@ st.write('**5. threshold:** If the union strategy is selected, the number of gen
 st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, Markov, PageRank., or Bi-PageRank')
 
 st.sidebar.write('**Gene expression data**')
-# if 'list_table1' not in st.session_state:
-#     st.session_state.list_table1 = []
-# list_table1 = []
-if 'list_table1' not in st.session_state:
-    st.session_state.list_table1 = []
 
-#if st.sidebar.button("Upload files"):
-    # table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
-    # if table1 is not None:
-    #     for uploaded_file in table1:
-    #         with uploaded_file:
-    #             df = pd.read_csv(uploaded_file, index_col=0)
-    #             st.session_state.list_table1.append(df)
-uploaded_files = st.sidebar.file_uploader('**⬇️ Upload your file here ⬇️**', type='csv', accept_multiple_files=True)
-if uploaded_files is not None:
+
+import streamlit as st
+import pandas as pd
+
+# Function to load and process the CSV files
+@st.cache(allow_output_mutation=True)
+def load_and_process_csv_files(uploaded_files):
+    processed_files = []
     for uploaded_file in uploaded_files:
         try:
             df = pd.read_csv(uploaded_file, index_col=0)
-            st.session_state.list_table1.append(df)
+            processed_files.append(df)
         except Exception as e:
             st.error(f"Error processing file: {e}")
+    return processed_files
 
+# Main Streamlit app
+if 'list_table1' not in st.session_state:
+    st.session_state.list_table1 = []
+
+uploaded_files = st.sidebar.file_uploader('**⬇️ Upload your file here ⬇️**', type='csv', accept_multiple_files=True)
+
+if uploaded_files is not None:
+    st.session_state.list_table1 += load_and_process_csv_files(uploaded_files)
 
 if st.sidebar.button("Apply sample data"):
+    # Sample data processing
     for i in range(len(csv_files)):
-        df_i = pd.read_csv(csv_files[i],index_col=0)
+        df_i = pd.read_csv(csv_files[i], index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
-        #st.write(df_i)
         st.session_state.list_table1.append(df_i)
+
+# Display files and allow removal
+for i, file in enumerate(st.session_state.list_table1):
+    if st.checkbox(f"Remove File {i + 1}"):
+        st.session_state.list_table1.pop(i)
+
+# ### now ##
+# # if 'list_table1' not in st.session_state:
+# #     st.session_state.list_table1 = []
+# # list_table1 = []
+# if 'list_table1' not in st.session_state:
+#     st.session_state.list_table1 = []
+
+# #if st.sidebar.button("Upload files"):
+#     # table1 = st.sidebar.file_uploader('**Upload here**', type='csv', accept_multiple_files=True)
+#     # if table1 is not None:
+#     #     for uploaded_file in table1:
+#     #         with uploaded_file:
+#     #             df = pd.read_csv(uploaded_file, index_col=0)
+#     #             st.session_state.list_table1.append(df)
+# uploaded_files = st.sidebar.file_uploader('**⬇️ Upload your file here ⬇️**', type='csv', accept_multiple_files=True)
+# if uploaded_files is not None:
+#     for uploaded_file in uploaded_files:
+#         try:
+#             df = pd.read_csv(uploaded_file, index_col=0)
+#             st.session_state.list_table1.append(df)
+#         except Exception as e:
+#             st.error(f"Error processing file: {e}")
+
+
+# if st.sidebar.button("Apply sample data"):
+#     for i in range(len(csv_files)):
+#         df_i = pd.read_csv(csv_files[i],index_col=0)
+#         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
+#         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
+#         #st.write(df_i)
+#         st.session_state.list_table1.append(df_i)
+
+# ### now ##
 
     # if table1 is not None:  # Check if files are uploaded
     #     for table_i in table1:
