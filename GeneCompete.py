@@ -218,16 +218,8 @@ st.write('GeneCompete is a tool to combine heterogeneous gene expression dataset
 st.subheader('Quick start')
 st.write('GeneCompete requires the following input files. The tutorial for GeneCompete:')
 
-def main():
-    # st.title("GitHub PDF Viewer")
-
-    github_url = 'https://github.com/panisajan/GeneCompete/blob/master/GeneCompete_tutorial.pdf'
-    
-    if st.button("GeneCompete tutorial"):
-        st.write(f"Click [here]({github_url}) to view tutorial.")
-
-if __name__ == "__main__":
-    main()
+github_url = 'https://github.com/panisajan/GeneCompete/blob/master/GeneCompete_tutorial.pdf'
+st.write(f"📌📌 Click [here]({github_url}) to view tutorial.")
 
 st.write('**1. Gene expression data:** Multiple csv files where the first column is gene name. These data can be prepared by any tools.')
 
