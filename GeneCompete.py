@@ -263,32 +263,22 @@ st.write('**6. Ranking Method:** Select Win-loss, Massey, Colley, Keener, Elo, M
 st.sidebar.write('**Gene expression data**')
 
 
-import streamlit as st
-import pandas as pd
 
-# Function to load and process the CSV files
-@st.cache(allow_output_mutation=True)
-def load_and_process_csv_files(uploaded_files):
-    processed_files = []
-    for uploaded_file in uploaded_files:
-        try:
-            df = pd.read_csv(uploaded_file, index_col=0)
-            processed_files.append(df)
-        except Exception as e:
-            st.error(f"Error processing file: {e}")
-    return processed_files
 
-# Main Streamlit app
 if 'list_table1' not in st.session_state:
     st.session_state.list_table1 = []
 
 uploaded_files = st.sidebar.file_uploader('**⬇️ Upload your file here ⬇️**', type='csv', accept_multiple_files=True)
 
 if uploaded_files is not None:
-    st.session_state.list_table1 += load_and_process_csv_files(uploaded_files)
+    for uploaded_file in uploaded_files:
+        try:
+            df = pd.read_csv(uploaded_file, index_col=0)
+            st.session_state.list_table1.append(df)
+        except Exception as e:
+            st.error(f"Error processing file: {e}")
 
 if st.sidebar.button("Apply sample data"):
-    # Sample data processing
     for i in range(len(csv_files)):
         df_i = pd.read_csv(csv_files[i], index_col=0)
         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
@@ -296,9 +286,10 @@ if st.sidebar.button("Apply sample data"):
         st.session_state.list_table1.append(df_i)
 
 # Display files and allow removal
-for i, file in enumerate(st.session_state.list_table1):
+for i, file in enumerate(st.session_state.list_table1.copy()):  # Make a copy to iterate over
     if st.checkbox(f"Remove File {i + 1}"):
         st.session_state.list_table1.pop(i)
+
 
 # ### now ##
 # # if 'list_table1' not in st.session_state:
