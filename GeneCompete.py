@@ -220,14 +220,7 @@ st.write('GeneCompete requires the following input files. The tutorial for GeneC
 
 github_url = 'https://github.com/panisajan/GeneCompete/blob/master/GeneCompete_tutorial.pdf'
 
-# st.write(f"**📌📌 Click [here]({github_url}) to view tutorial.**")
-
-label = r'''
-$\textsf{
-    \Huge 📌📌 Click [here]({github_url}) to view tutorial.
-}$
-'''
-st.write(label)
+st.write(f"**📌📌 Click [here]({github_url}) to view tutorial.**")
 
 st.write('**1. Gene expression data:** Multiple csv files where the first column is gene name. These data can be prepared by any tools.')
 
