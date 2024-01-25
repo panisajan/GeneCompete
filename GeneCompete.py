@@ -220,15 +220,14 @@ st.write('GeneCompete requires the following input files. The tutorial for GeneC
 
 github_url = 'https://github.com/panisajan/GeneCompete/blob/master/GeneCompete_tutorial.pdf'
 
-import subprocess
+st.write(f"**📌📌 Click [here]({github_url}) to view tutorial.**")
 
-subprocess.call(['pip', 'install', 'st-annotated-text'])
-
-from annotated_text import annotated_text
-
-annotated_text("📌📌 Click [here]({github_url}) to view tutorial.")
-
-st.write(f"📌📌 Click [here]({github_url}) to view tutorial.")
+label = r'''
+$\textsf{
+    \Huge 📌📌 Click [here]({github_url}) to view tutorial.
+}$
+'''
+st.text_input(label)
 
 st.write('**1. Gene expression data:** Multiple csv files where the first column is gene name. These data can be prepared by any tools.')
 
