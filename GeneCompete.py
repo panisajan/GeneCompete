@@ -280,16 +280,16 @@ if uploaded_files is not None:
             st.error(f"Error processing file: {e}")
 
 
-if st.sidebar.button("Apply sample data"):
-    st.session_state.list_table1 = []
-    # Make a copy of the current list before making any changes
-    current_list = st.session_state.list_table1.copy()
+# if st.sidebar.button("Apply sample data"):
+#     st.session_state.list_table1 = []
+#     # Make a copy of the current list before making any changes
+#     current_list = st.session_state.list_table1.copy()
 
-    for i in range(len(csv_files)):
-        df_i = pd.read_csv(csv_files[i], index_col=0)
-        df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
-        df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
-        current_list.append(df_i)
+#     for i in range(len(csv_files)):
+#         df_i = pd.read_csv(csv_files[i], index_col=0)
+#         df_i['adj.P.Val'] = df_i['adj.P.Val'].apply(lambda x: "{:.1e}".format(x))
+#         df_i['P.Value'] = df_i['P.Value'].apply(lambda x: "{:.1e}".format(x))
+#         current_list.append(df_i)
 
     # Update the session state variable with the modified list
 st.session_state.list_table1 = current_list
