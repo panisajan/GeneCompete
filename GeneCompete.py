@@ -208,7 +208,7 @@ st.title('🧬 Integration of multiple gene expression with GeneCompete 🏆')
 st.subheader(" \n")
 st.subheader('What is GeneCompete?')
 st.write('GeneCompete is a tool to combine heterogeneous gene expression datasets to order gene importance.')
-
+st.write('For more detail: [Janyasupab, P., Suratanee, A., & Plaimas, K. (2023). GeneCompete: an integrative tool of a novel union algorithm with various ranking techniques for multiple gene expression data. PeerJ Computer Science, 9, e1686.](https://peerj.com/articles/cs-1686/)')
 # from PIL import Image
 
 # image = Image.open('flow1.png')
