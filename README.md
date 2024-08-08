@@ -1,6 +1,7 @@
 # 🧬 Integration of multiple gene expression with GeneCompete 🏆
 
 GeneCompete is a tool to combine heterogeneous gene expression datasets to order gene importance.
+For more detail: [Janyasupab, P., Suratanee, A., & Plaimas, K. (2023). GeneCompete: an integrative tool of a novel union algorithm with various ranking techniques for multiple gene expression data. PeerJ Computer Science, 9, e1686.](https://peerj.com/articles/cs-1686/)
 
 ## Web-Application
 The easy-to-use web-based platform can be accessed through 👉
@@ -60,6 +61,6 @@ score.head()
 <img src='figure/Fig3.png'>
 
 ## Further Reading
-[^1]: aa
-[^2]: aa
+[^1]: Janyasupab, P., Suratanee, A., & Plaimas, K. (2023). GeneCompete: an integrative tool of a novel union algorithm with various ranking techniques for multiple gene expression data. PeerJ Computer Science, 9, e1686.
+[^2]: Janyasupab, P., Suratanee, A., & Plaimas, K. (2022, December). Heterogeneous data analysis of hypertrophic cardiomyopathy to prioritize important genes. In 2022 26th International Computer Science and Engineering Conference (ICSEC) (pp. 325-329). IEEE.
 
